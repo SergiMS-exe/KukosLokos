@@ -5,10 +5,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.HomeFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <HorizontalScrollView
+        android:id="@+id/novedades"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </HorizontalScrollView>
+    <HorizontalScrollView
+        android:id="@+id/populares"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </HorizontalScrollView>
 </FrameLayout>

@@ -10,6 +10,8 @@ public class MainRecyclerTab extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_tab);
+
+
     }
 
     // Metodo a borrar

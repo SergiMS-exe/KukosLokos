@@ -11,8 +11,11 @@
         <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/activity_main_recycler_tabbed.xml" value="0.3625" />
         <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/activity_recycler_tab.xml" value="0.25" />
         <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/fragment_dashboard.xml" value="0.3625" />
-        <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/fragment_home.xml" value="0.3625" />
+        <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/fragment_notifications.xml" value="0.3625" />
+        <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/linear_horizontal_scroll.xml" value="0.1" />
+        <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/linear_recycler_view_layout.xml" value="0.25" />
+        <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/peli_item.xml" value="0.1" />
         <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/layout/scrolling_main.xml" value="0.1" />
         <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
         <entry key="..\:/Users/sergi/Documents/Git/KukosLokos/app/src/main/res/menu/bottom_nav_view.xml" value="0.1" />
