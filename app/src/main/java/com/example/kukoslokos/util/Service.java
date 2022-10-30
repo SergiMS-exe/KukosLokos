@@ -25,8 +25,8 @@ public class Service {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
 
-            int responseCode = con.getResponseCode();
-            if (responseCode==200){
+
+            if (con.getResponseCode()==200){
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(con.getInputStream())
                 );
