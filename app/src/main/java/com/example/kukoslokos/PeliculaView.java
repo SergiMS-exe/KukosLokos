@@ -26,7 +26,7 @@ public class PeliculaView extends RecyclerView.ViewHolder {
     public void loadData(Pelicula peli, final PeliculasAdapter.OnItemClickListener listener){
         titulo.setText(peli.getTitulo());
         Picasso.get()
-                .load(peli.getPathPoster()).into(poster);
+                .load("https://image.tmdb.org/t/p/w500"+peli.getPathPoster()).into(poster);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {

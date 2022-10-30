@@ -1,5 +1,6 @@
 package com.example.kukoslokos;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class PeliculasAdapter extends RecyclerView.Adapter<PeliculaView>{
     @Override
     public void onBindViewHolder(@NonNull PeliculaView holder, int position) {
         Pelicula peli = peliculas.get(position);
-
+        Log.i("pelis list", getItemCount()+"");
         holder.loadData(peli, listener);
     }
 

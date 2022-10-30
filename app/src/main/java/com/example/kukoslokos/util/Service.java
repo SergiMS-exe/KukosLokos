@@ -24,7 +24,7 @@ public class Service {
             URL url = new URL(path);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
-
+            con.setRequestProperty("Content-Type", "application/json");
 
             if (con.getResponseCode()==200){
                 BufferedReader in = new BufferedReader(
@@ -46,10 +46,10 @@ public class Service {
         }
     }
 
-    public List<Pelicula> getPelisPopulares() {
-        List<Pelicula> peliculas = null;
+    public static List<Pelicula> getPelisPopulares() {
+        List<Pelicula> peliculas = new ArrayList<Pelicula>();
         try {
-            JSONObject jsonObject = getRequestJSONObject(URL_BASE+"/movie/popular=api_key="+API_KEY+"&page=1");
+            JSONObject jsonObject = getRequestJSONObject(URL_BASE+"/movie/popular?api_key="+API_KEY+"&language=es-ES");
             peliculas=convertToPeliculaList(jsonObject.getJSONArray("results"));
         } catch (JSONException e) {
             e.printStackTrace();

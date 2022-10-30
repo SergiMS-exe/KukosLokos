@@ -2,6 +2,7 @@ package com.example.kukoslokos.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.List;
 

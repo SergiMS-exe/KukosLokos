@@ -1,5 +1,6 @@
 package com.example.kukoslokos;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,13 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kukoslokos.model.Seccion;
+
 import java.util.List;
 
-public class SectionAdapter extends RecyclerView.Adapter {
+public class SectionAdapter extends RecyclerView.Adapter<SectionView> {
 
-    List<String> secciones;
+    List<Seccion> secciones;
 
-    public SectionAdapter(List<String> secciones){
+    public SectionAdapter(List<Seccion> secciones){
         this.secciones=secciones;
     }
     @NonNull
@@ -26,11 +29,14 @@ public class SectionAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull SectionView holder, int position) {
+        Seccion seccion = secciones.get(position);
 
+        holder.loadData(seccion.getTitulo(), seccion.getPeliculas());
     }
+
 
     @Override
     public int getItemCount() {
-        return 0;
+        return secciones.size();
     }
 }

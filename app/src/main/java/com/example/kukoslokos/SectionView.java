@@ -1,14 +1,19 @@
 package com.example.kukoslokos;
 
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kukoslokos.model.Pelicula;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class SectionView extends RecyclerView.ViewHolder {
 
@@ -22,8 +27,14 @@ public class SectionView extends RecyclerView.ViewHolder {
         peliculas=(RecyclerView) itemView.findViewById(R.id.listPeliculas);
 
     }
-    public void loadData(String tituloSeccion, PeliculasAdapter pelis){
+    public void loadData(String tituloSeccion, List<Pelicula> pelis){
         titulo.setText(tituloSeccion);
-        peliculas.setAdapter(pelis);
+        peliculas.setLayoutManager(new LinearLayoutManager(peliculas.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        peliculas.setAdapter(new PeliculasAdapter(pelis, new PeliculasAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Pelicula peli) {
+                Log.i("listened", "Cambio de vista aqui");
+            }
+        }));
     }
 }

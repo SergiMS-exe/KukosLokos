@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="150dp"
+    android:layout_height="280dp"
     android:layout_width="200dp">
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="1dp">
 
         <ImageView
             android:id="@+id/poster"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"/>
+            android:layout_width="280dp"
+            android:layout_height="400dp" />
 
         <TextView
             android:id="@+id/titulo"
@@ -20,8 +20,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:textSize="40dp"
-            android:text="Titulo"/>
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:shadowColor="@color/black"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
