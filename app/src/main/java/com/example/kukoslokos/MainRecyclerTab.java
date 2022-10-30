@@ -35,15 +35,21 @@ public class MainRecyclerTab extends AppCompatActivity {
     }
 
     //Cargar secciones
-    private void cargarSecciones(){
-        peliculaList=cargarPeliculas();
-        Log.i("Peliculas length",""+peliculaList.size());
+    private void cargarSecciones() {
+        peliculaList = cargarPeliculas();
+        Log.i("Peliculas length", "" + peliculaList.size());
         //Creamos batida de secciones estaticas
-        seccionList=createSections();
-        Log.i("Section length",""+seccionList.size());
+        seccionList = createSections();
+        Log.i("Section length", "" + seccionList.size());
         //obterner linearlayout
-        RecyclerView seccionesView= findViewById(R.id.secctionList);
-        seccionesView.setAdapter(new SectionAdapter(seccionList));
+        RecyclerView seccionesView = findViewById(R.id.secctionList);
+        PeliculasAdapter.OnItemClickListener listener = new PeliculasAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Pelicula peli) {
+                Log.i("listened", "Cambio de vista a DETALLES DE" + peli.getTitulo());
+            }
+        };
+        seccionesView.setAdapter(new SectionAdapter(seccionList, listener));
 
     }
 

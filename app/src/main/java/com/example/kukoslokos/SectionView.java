@@ -1,5 +1,6 @@
 package com.example.kukoslokos;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,14 +28,9 @@ public class SectionView extends RecyclerView.ViewHolder {
         peliculas=(RecyclerView) itemView.findViewById(R.id.listPeliculas);
 
     }
-    public void loadData(String tituloSeccion, List<Pelicula> pelis){
+    public void loadData(String tituloSeccion, List<Pelicula> pelis, PeliculasAdapter.OnItemClickListener listener){
         titulo.setText(tituloSeccion);
         peliculas.setLayoutManager(new LinearLayoutManager(peliculas.getContext(),LinearLayoutManager.HORIZONTAL,false));
-        peliculas.setAdapter(new PeliculasAdapter(pelis, new PeliculasAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Pelicula peli) {
-                Log.i("listened", "Cambio de vista aqui");
-            }
-        }));
+        peliculas.setAdapter(new PeliculasAdapter(pelis, listener));
     }
 }

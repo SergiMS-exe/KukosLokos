@@ -15,9 +15,11 @@ import java.util.List;
 public class SectionAdapter extends RecyclerView.Adapter<SectionView> {
 
     List<Seccion> secciones;
+    PeliculasAdapter.OnItemClickListener listener;
 
-    public SectionAdapter(List<Seccion> secciones){
+    public SectionAdapter(List<Seccion> secciones, PeliculasAdapter.OnItemClickListener listener){
         this.secciones=secciones;
+        this.listener=listener;
     }
     @NonNull
     @Override
@@ -31,7 +33,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionView> {
     public void onBindViewHolder(@NonNull SectionView holder, int position) {
         Seccion seccion = secciones.get(position);
 
-        holder.loadData(seccion.getTitulo(), seccion.getPeliculas());
+        holder.loadData(seccion.getTitulo(), seccion.getPeliculas(),listener);
     }
 
 
