@@ -5,14 +5,18 @@ import android.os.AsyncTask;
 import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.util.Service;
 
-import java.net.URL;
 import java.util.List;
 
-public class GetPelisPopulares extends AsyncTask<Void, Void, List<Pelicula>> {
+public class GetPelis extends AsyncTask<Void, Void, List<Pelicula>> {
 
+    String categoria;
+
+    public GetPelis(String categoria){
+        this.categoria=categoria;
+    }
 
     @Override
     protected List<Pelicula> doInBackground(Void... voids) {
-        return Service.getPelisPopulares();
+        return Service.getPelis(categoria);
     }
 }

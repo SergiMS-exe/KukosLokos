@@ -1,28 +1,25 @@
 package com.example.kukoslokos;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.model.Seccion;
-import com.example.kukoslokos.tasks.GetPelisPopulares;
-import com.example.kukoslokos.util.Service;
+import com.example.kukoslokos.tasks.GetPelis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class MainRecyclerTab extends AppCompatActivity {
 
-    static final List<String> SECCIONES = new ArrayList<>(Arrays.asList("Novedades", "Populares", "Tendencias", "Para ti"));
-    List<Pelicula> peliculaList;
+    static final Map<String, String> SECCIONES = Map.of("Novedades", "now_playing", "Populares","popular", "Tendencias","top_rated", "Proximamente", "upcoming");
     List<Seccion> seccionList;
 
 
@@ -36,11 +33,12 @@ public class MainRecyclerTab extends AppCompatActivity {
 
     //Cargar secciones
     private void cargarSecciones() {
-        peliculaList = cargarPeliculas();
-        Log.i("Peliculas length", "" + peliculaList.size());
+        HashMap<String, List<Pelicula>> peliculasEnSecciones = new HashMap<String, List<Pelicula>>();
+        for (String key: SECCIONES.keySet()){
+            peliculasEnSecciones.put(key, cargarPeliculas(SECCIONES.get(key)));
+        }
         //Creamos batida de secciones estaticas
-        seccionList = createSections();
-        Log.i("Section length", "" + seccionList.size());
+        seccionList = createSections(peliculasEnSecciones);
         //obterner linearlayout
         RecyclerView seccionesView = findViewById(R.id.secctionList);
         PeliculasAdapter.OnItemClickListener listener = new PeliculasAdapter.OnItemClickListener() {
@@ -53,20 +51,18 @@ public class MainRecyclerTab extends AppCompatActivity {
 
     }
 
-    private List<Seccion> createSections() {
+    private List<Seccion> createSections(HashMap<String, List<Pelicula>> peliculasEnSecciones) {
         List<Seccion> secciones = new ArrayList<Seccion>();
 
-        secciones.add(new Seccion(SECCIONES.get(0), peliculaList));
-        secciones.add(new Seccion(SECCIONES.get(1), peliculaList));
-        secciones.add(new Seccion(SECCIONES.get(2), peliculaList));
-        secciones.add(new Seccion(SECCIONES.get(3), peliculaList));
+        for (String key : peliculasEnSecciones.keySet())
+            secciones.add(new Seccion(key, peliculasEnSecciones.get(key)));
 
         return secciones;
     }
 
-    private List<Pelicula> cargarPeliculas() {
+    private List<Pelicula> cargarPeliculas(String categoria) {
         try {
-            GetPelisPopulares populares = new GetPelisPopulares();
+            GetPelis populares = new GetPelis(categoria);
             populares.execute();
             return populares.get();
         } catch (ExecutionException e) {
