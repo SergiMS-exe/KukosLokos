@@ -46,10 +46,11 @@ public class Service {
         }
     }
 
-    public static List<Pelicula> getPelisPopulares() {
+    public static List<Pelicula> getPelis(String categoria) {
         List<Pelicula> peliculas = new ArrayList<Pelicula>();
         try {
-            JSONObject jsonObject = getRequestJSONObject(URL_BASE+"/movie/popular?api_key="+API_KEY+"&language=es-ES");
+            String path = URL_BASE+"/movie/"+categoria+"?api_key="+API_KEY+"&language=es-ES";
+            JSONObject jsonObject = getRequestJSONObject(path);
             peliculas=convertToPeliculaList(jsonObject.getJSONArray("results"));
         } catch (JSONException e) {
             e.printStackTrace();
