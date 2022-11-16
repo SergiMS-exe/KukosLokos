@@ -101,6 +101,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(Pelicula peli) {
                 Log.i("listened", "Cambio de vista a DETALLES DE" + peli.getTitulo());
+                //Creamos el framento de información
+                MovieFragment movieFragment = new MovieFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.flFragment, movieFragment).commit();
             }
         };
         seccionesView.setAdapter(new SectionAdapter(seccionList, listener));
