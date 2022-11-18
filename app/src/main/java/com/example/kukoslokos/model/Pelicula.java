@@ -30,8 +30,6 @@ public class Pelicula implements Parcelable {
         generos= in.readArrayList(String.class.getClassLoader());
     }
 
-
-
     public int getId(){
         return id;
     }
