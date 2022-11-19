@@ -7,7 +7,7 @@
     tools:context=".ui.RegistroFragment">
 
     <EditText
-        android:id="@+id/editTextContraseñaRegistro2"
+        android:id="@+id/editTextContrasenaRegistro2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -41,7 +41,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="@string/registro_nombre"
+        android:hint="@string/registro_nombre"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,12 +54,12 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="@string/registro_apellidos"
+        android:hint="@string/registro_apellidos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextNombre" />
 
     <EditText
-        android:id="@+id/editTextContraseñaRegistro"
+        android:id="@+id/editTextContrasenaRegistro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -93,12 +93,12 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="@string/registro_id"
+        android:hint="@string/registro_id"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnFinalizar"
+        android:id="@+id/btnFinalizarRegistro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="260dp"
@@ -108,12 +108,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnCancelar"
+        android:id="@+id/btnCancelarRegistro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="532dp"
         android:layout_marginEnd="104dp"
         android:text="@string/registro_cancelar"
-        app:layout_constraintEnd_toStartOf="@+id/btnFinalizar"
+        app:layout_constraintEnd_toStartOf="@+id/btnFinalizarRegistro"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

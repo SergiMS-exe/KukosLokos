@@ -8,12 +8,17 @@ import android.view.MenuItem;
 
 import com.example.kukoslokos.ui.HomeFragment;
 import com.example.kukoslokos.ui.LoginFragment;
+import com.example.kukoslokos.ui.ProfileFragment;
 import com.example.kukoslokos.ui.SavedFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainRecyclerTab extends AppCompatActivity {
 
-
+    // KEYS
+    // creating constant keys for shared preferences.
+    public static final String SHARED_PREFS = "shared_prefs";
+    // key for storing user id.
+    public static final String USER_ID_KEY = "user_id_key";
 
 
     @Override
@@ -26,7 +31,7 @@ public class MainRecyclerTab extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(navBarListener);
         navView.setSelectedItemId(R.id.home);
 
-        int i=0;
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navBarListener
@@ -52,9 +57,9 @@ public class MainRecyclerTab extends AppCompatActivity {
 
                 case R.id.profile:
 
-                    LoginFragment loginFragment = new LoginFragment();
+                    ProfileFragment profileFragment = new ProfileFragment();
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, profileFragment).commit();
 
                     return true;
 

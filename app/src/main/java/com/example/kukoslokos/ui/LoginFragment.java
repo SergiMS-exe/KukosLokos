@@ -18,16 +18,11 @@ import android.widget.Toast;
 import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
 import com.example.kukoslokos.datos.UsuarioDataSource;
+import com.example.kukoslokos.model.Usuario;
 
 public class LoginFragment extends Fragment {
 
-    // KEYS
-    // creating constant keys for shared preferences.
-    public static final String SHARED_PREFS = "shared_prefs";
-    // key for storing email.
-    public static final String EMAIL_KEY = "email_key";
-    // key for storing password.
-    public static final String PASSWORD_KEY = "password_key";
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +34,7 @@ public class LoginFragment extends Fragment {
     private String mParam2;
 
     private SharedPreferences sharedPreferences;
-    private String email, password;
+    private int userId;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -85,15 +80,24 @@ public class LoginFragment extends Fragment {
         super.onResume();
 
         //Obtenemos los campos de texto del email y la password
-        EditText emailEditText = getView().findViewById(R.id.emailAddress);
-        EditText passwordEditText = getView().findViewById(R.id.password);
-        Button loginBtn = getView().findViewById(R.id.btn_iniciar_sesion);
+        EditText emailEditText = (EditText) getView().findViewById(R.id.emailAddress);
+        EditText passwordEditText = (EditText) getView().findViewById(R.id.password);
+        Button loginBtn = (Button) getView().findViewById(R.id.btn_iniciar_sesion);
+
+        Button btnRegistro = (Button)getView().findViewById(R.id.btnRegistrarse);
+        btnRegistro.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                RegistroFragment registroFragment = new RegistroFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.mainFragment, registroFragment).commit();
+            }
+        });
 
         //Obtenemos los datos del sharedPreferences
-        sharedPreferences = requireContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
 
-        email = sharedPreferences.getString("EMAIL_KEY",null);
-        password= sharedPreferences.getString("PASSWORD_KEY",null);
+
+        userId = sharedPreferences.getInt("USER_ID_KEY",-1);
 
         //listener para el boton
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -106,23 +110,19 @@ public class LoginFragment extends Fragment {
     }
 
     private void login(String email, String password){
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+        /*if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
             Toast.makeText(getContext(), "Please Enter Email and Password", Toast.LENGTH_SHORT).show();
         }
-        else {
+        else {*/
             UsuarioDataSource userds = new UsuarioDataSource(getContext());
-            userds.login(email, password);
+            Usuario user = userds.login(email, password);
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            editor.putString(EMAIL_KEY, email);
-            editor.putString(PASSWORD_KEY, password);
-
+            editor.putInt(MainRecyclerTab.USER_ID_KEY, user.getId());
             editor.apply();
 
             ProfileFragment profileFragment = new ProfileFragment();
-
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, profileFragment).commit();
         }
-    }
+    //}
 }
