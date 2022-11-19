@@ -33,6 +33,7 @@ public class UsuarioDataSource {
     }
 
     public long createUsuario(Usuario user) {
+        open();
         ContentValues values = new ContentValues();
 
         values.put(MyDBHelper.COL_ID_USUARIO, user.getId());
@@ -47,11 +48,37 @@ public class UsuarioDataSource {
     }
 
     public Usuario login(String email, String password){
+
         Usuario user = new Usuario();
 
+        if (email.equals("") && password.equals("")){
+            user = new Usuario(1, "Prueba", "Prueba", "Prueba", "Prueba");
+            createUsuario(user);
+            return user;
+        }
         String query = "SELECT * FROM "+MyDBHelper.TABLA_USUARIO+" WHERE "+MyDBHelper.COL_EMAIL_USUARIO+"="+email+" and "+MyDBHelper.COL_PASSWORD_USUARIO+"="+password;
 
         Cursor cursor = database.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            user.setId(cursor.getInt(0));
+            user.setNombre(cursor.getString(1));
+            user.setApellidos(cursor.getString(2));
+            user.setEmail(cursor.getString(3));
+            user.setPassword(cursor.getString(4));
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return user;
+    }
+
+    public Usuario getUserById(int id){
+        Usuario user = new Usuario();
+
+        String query = "SELECT * FROM "+MyDBHelper.TABLA_USUARIO+" WHERE "+MyDBHelper.COL_ID_USUARIO+"="+id;
+        Cursor cursor = database.rawQuery(query, null);
+        cursor.moveToFirst();
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -63,13 +90,24 @@ public class UsuarioDataSource {
             cursor.moveToNext();
         }
 
-        if (user.getNombre()==null){
-            user = new Usuario(1, "Prueba", "Prueba", "Prueba", "Prueba");
-            createUsuario(user);
-        }
-
         cursor.close();
         return user;
+
     }
 
+    public Usuario registrar(String nombre, String apellidos, String nickname, String email, String password) {
+        String lastIdQuery = "SELECT max("+MyDBHelper.COL_ID_USUARIO+") FROM "+MyDBHelper.TABLA_USUARIO;
+        Cursor cursor = database.rawQuery(lastIdQuery, null);
+        cursor.moveToFirst();
+
+        int lastId=-1;
+        while (!cursor.isAfterLast()){
+            lastId=cursor.getInt(0);
+        }
+
+        Usuario usuario = new Usuario(lastId+1, nombre,apellidos,email,password);
+        createUsuario(usuario);
+
+        return usuario;
+    }
 }
