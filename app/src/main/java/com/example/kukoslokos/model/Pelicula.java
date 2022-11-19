@@ -14,6 +14,8 @@ public class Pelicula implements Parcelable {
 
     List<String> generos;
 
+    public Pelicula(){}
+
     public Pelicula(int id, String titulo, String argumento, String pathPoster, List<String> generos) {
         this.id=id;
         this.titulo = titulo;
@@ -29,8 +31,6 @@ public class Pelicula implements Parcelable {
         pathPoster=in.readString();
         generos= in.readArrayList(String.class.getClassLoader());
     }
-
-
 
     public int getId(){
         return id;

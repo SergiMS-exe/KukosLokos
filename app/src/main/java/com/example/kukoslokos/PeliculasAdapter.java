@@ -44,7 +44,6 @@ public class PeliculasAdapter extends RecyclerView.Adapter<PeliculaView>{
         holder.loadData(peli, listener);
     }
 
-
     @Override
     public int getItemCount() {
         return peliculas.size();

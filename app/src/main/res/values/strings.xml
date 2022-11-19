@@ -6,5 +6,17 @@
     <string name="profile">Perfil</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="detalles_pelicula_fragment">Fragment de detalles (Movie)</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="repetir_contraseña">Repetir Contraseña</string>
+    <string name="correo">Correo electrónico</string>
+    <string name="sesion">INICIAR SESION</string>
+    <string name="no_hay_cuenta">¿No tienes cuenta?</string>
+    <string name="registrarse">REGISTRATE YA</string>
+    <string name="registro">Registro</string>
+    <string name="registro_finalizar">FINALIZAR</string>
+    <string name="registro_cancelar">CANCELAR</string>
+    <string name="registro_nombre">Nombre</string>
+    <string name="registro_id">Nickname</string>
+    <string name="registro_apellidos">Apellidos</string>
 </resources>
