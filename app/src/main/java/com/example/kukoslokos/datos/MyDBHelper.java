@@ -13,10 +13,10 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
 
     //Tabla peliculas y columnas
-    public static final String TABLA_PELICULA = "tabla_pelicula";
+    public static final String TABLA_FAVS = "tabla_favorito";
 
-    public static final String COL_ID_PELICULA = "id_pelicula";
-    public static final String COL_ID_TMDB_PELICULA = "tmdb_id_pelicula";
+    public static final String COL_ID_FAVS = "id_favorito";
+    public static final String COL_FECHA = "fecha";
 
 
     //Tabla usuario y columnas
@@ -29,17 +29,15 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public static final String COL_PASSWORD_USUARIO = "password_usuario";
 
 
-    //Tabla pelicula-usuario
-    public static final String TABLA_PELICULA_USUARIO = "tabla_pelicula_usuario";
-
-
     /**
      * Script de creacion de base de datos en sql
      */
-    private static final String CREATE_TABLA_PELICULAS = "create table if not exists " + TABLA_PELICULA
+    private static final String CREATE_TABLA_FAVS = "create table if not exists " + TABLA_FAVS
             + "( "+
-            COL_ID_PELICULA + " " + "integer primary key, " +
-            COL_ID_TMDB_PELICULA + " " + "integer not null unique );";
+            COL_ID_FAVS + " " + "integer, " +
+            COL_ID_USUARIO + " " + "integer, "+
+            COL_FECHA +" integer, "+
+            "primary key ("+COL_ID_FAVS+", "+ COL_ID_USUARIO +"));";
 
     private static final String CREATE_TABLA_USUARIOS= "create table if not exists " + TABLA_USUARIO
             + "( "+
@@ -47,22 +45,14 @@ public class MyDBHelper extends SQLiteOpenHelper {
             COL_NOMBRE_USUARIO + " " + "text not null," +
             COL_APELLIDOS_USUARIO + " " + "text not null," +
             COL_EMAIL_USUARIO + " " + "text not null," +
-            COL_PASSWORD_USUARIO + " " + "text not null," +
-            " );";
-
-    private static final String CREATE_TABLA_PELICULA_USUARIO= "create table if not exists " + TABLA_PELICULA_USUARIO
-            + "( "+
-            COL_ID_USUARIO + " " + "integer, " +
-            COL_ID_PELICULA + " " + "integer, " +
-            " primary key (" + COL_ID_USUARIO + ", " + COL_ID_PELICULA + ")"+
+            COL_PASSWORD_USUARIO + " " + "text not null" +
             " );";
 
     /**
      * Script borrado base de datos
      */
-    private static final String DROP_PELICULAS = "DROP TABLE IF EXISTS " + TABLA_PELICULA;
+    private static final String DROP_FAVS = "DROP TABLE IF EXISTS " + TABLA_FAVS;
     private static final String DROP_USUARIOS = "DROP TABLE IF EXISTS " + TABLA_USUARIO;
-    private static final String DROP_PELICULA_USUARIOS = "DROP TABLE IF EXISTS " + TABLA_PELICULA_USUARIO;
 
 
     public MyDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -72,16 +62,14 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(CREATE_TABLA_PELICULAS);
-        sqLiteDatabase.execSQL(CREATE_TABLA_PELICULA_USUARIO);
         sqLiteDatabase.execSQL(CREATE_TABLA_USUARIOS);
+        sqLiteDatabase.execSQL(CREATE_TABLA_FAVS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL(DROP_PELICULAS);
-        sqLiteDatabase.execSQL(DROP_PELICULA_USUARIOS);
         sqLiteDatabase.execSQL(DROP_USUARIOS);
+        sqLiteDatabase.execSQL(DROP_FAVS);
         onCreate(sqLiteDatabase);
     }
 }

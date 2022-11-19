@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
+import com.example.kukoslokos.datos.UsuarioDataSource;
 
 public class LoginFragment extends Fragment {
 
@@ -108,7 +109,8 @@ public class LoginFragment extends Fragment {
             Toast.makeText(getContext(), "Please Enter Email and Password", Toast.LENGTH_SHORT).show();
         }
         else {
-
+            UsuarioDataSource userds = new UsuarioDataSource(getContext());
+            userds.login(email, password);
         }
     }
 }
