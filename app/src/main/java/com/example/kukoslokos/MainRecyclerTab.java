@@ -39,13 +39,13 @@ public class MainRecyclerTab extends AppCompatActivity {
                 case R.id.home:
                     //Creamos el framento de información
                     HomeFragment homeFragment = new HomeFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, homeFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, homeFragment).commit();
 
                     return true;
 
                 case R.id.saved:
                     SavedFragment savedFragment = new SavedFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, savedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, savedFragment).commit();
 
 
                     return true;
@@ -54,7 +54,7 @@ public class MainRecyclerTab extends AppCompatActivity {
 
                     LoginFragment loginFragment = new LoginFragment();
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, loginFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
 
                     return true;
 

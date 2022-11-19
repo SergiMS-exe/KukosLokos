@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -111,6 +112,17 @@ public class LoginFragment extends Fragment {
         else {
             UsuarioDataSource userds = new UsuarioDataSource(getContext());
             userds.login(email, password);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putString(EMAIL_KEY, email);
+            editor.putString(PASSWORD_KEY, password);
+
+            editor.apply();
+
+            ProfileFragment profileFragment = new ProfileFragment();
+
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, profileFragment).commit();
         }
     }
 }
