@@ -11,16 +11,18 @@ public class Pelicula implements Parcelable {
     String titulo;
     String argumento;
     String pathPoster;
+    String pathBackdrop;
 
     List<String> generos;
 
     public Pelicula(){}
 
-    public Pelicula(int id, String titulo, String argumento, String pathPoster, List<String> generos) {
+    public Pelicula(int id, String titulo, String argumento, String pathPoster, String pathBackdrop, List<String> generos) {
         this.id=id;
         this.titulo = titulo;
         this.argumento = argumento;
         this.pathPoster = pathPoster;
+        this.pathBackdrop = pathBackdrop;
         this.generos = generos;
     }
 
@@ -29,6 +31,7 @@ public class Pelicula implements Parcelable {
         titulo=in.readString();
         argumento=in.readString();
         pathPoster=in.readString();
+        pathBackdrop=in.readString();
         generos= in.readArrayList(String.class.getClassLoader());
     }
 
@@ -48,6 +51,10 @@ public class Pelicula implements Parcelable {
         return pathPoster;
     }
 
+    public String getPathBackdrop() {
+        return pathBackdrop;
+    }
+
     public List<String> getGeneros() {
         return generos;
     }
@@ -63,6 +70,7 @@ public class Pelicula implements Parcelable {
         dest.writeString(titulo);
         dest.writeString(argumento);
         dest.writeString(pathPoster);
+        dest.writeString(pathBackdrop);
         dest.writeStringList(generos);
     }
 

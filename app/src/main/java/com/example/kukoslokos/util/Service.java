@@ -90,9 +90,10 @@ public class Service {
         String titulo = jsonObject.getString("title");
         String argumento = jsonObject.getString("overview");
         String pathPoster = jsonObject.getString("poster_path");
+        String pathBackdrop = jsonObject.getString("backdrop_path");
         List<String> generos = new ArrayList<String>();//getCategorias((int[])jsonObject.get("genre_ids"));
 
-        return new Pelicula(id, titulo, argumento, pathPoster, generos);
+        return new Pelicula(id, titulo, argumento, pathPoster, pathBackdrop, generos);
     }
 
     private static List<String> getCategorias(int[] categoriasIds) {
