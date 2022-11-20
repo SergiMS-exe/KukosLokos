@@ -18,9 +18,11 @@ import com.example.kukoslokos.PeliculaView;
 import com.example.kukoslokos.R;
 import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.tasks.GetPeliById;
+import com.example.kukoslokos.tasks.GetPeliculasGuardadas;
 import com.example.kukoslokos.tasks.GuardarPeli;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MovieDetailsFragment extends Fragment {
@@ -94,15 +96,31 @@ public class MovieDetailsFragment extends Fragment {
 
             SharedPreferences sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
             int userId = sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1);
-            if (userId!=-1)
+            int accion=GuardarPeli.NOT_WORKING;
+            String textButton = "Guardar";
+            if (userId!=-1) {//Comprobamos si el usuario esta registrado
                 btnGuardar.setVisibility(View.VISIBLE);
 
+                GetPeliculasGuardadas peliculasGuardadas = new GetPeliculasGuardadas(userId, getContext());
+                peliculasGuardadas.execute();
+                List<Pelicula> peliculaList = peliculasGuardadas.get();
+                if (peliculaList.contains(pelicula)){ //Comprobamos si el usuario ya ha guardado la pelicula
+                    btnGuardar.setText("Eliminar guardado");
+                    accion=GuardarPeli.ELMINIAR_GUARDADA;
+                } else {
+                    accion = GuardarPeli.GUARDAR;
+                    textButton="Eliminar guardado";
+                }
+            }
 
+            int finalAccion = accion;
+            String finalTextButton = textButton;
             btnGuardar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    GuardarPeli guardarPeli = new GuardarPeli(userId, pelicula.getId(), getContext());
-                    guardarPeli.execute();
+                    GuardarPeli guardarPelicula = new GuardarPeli(userId, pelicula.getId(), getContext(), finalAccion);
+                    guardarPelicula.execute();
+                    btnGuardar.setText(finalTextButton);
                 }
             });
 

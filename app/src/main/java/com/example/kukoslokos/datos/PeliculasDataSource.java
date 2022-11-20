@@ -64,4 +64,14 @@ public class PeliculasDataSource {
         close();
         return favs;
     }
+
+    public void eliminarFavPeli(int idPeli, int idUser) {
+        open();
+        String deleteQuery = "DELETE FROM "+MyDBHelper.TABLA_FAVS+" WHERE "+
+                MyDBHelper.COL_ID_USUARIO+"="+idUser+" AND "+MyDBHelper.COL_ID_FAVS+" = "+idPeli;
+        //database.rawQuery(deleteQuery, null);
+        database.delete(MyDBHelper.TABLA_FAVS, MyDBHelper.COL_ID_FAVS+"=? AND "+
+                MyDBHelper.COL_ID_USUARIO+"=?", new String[]{String.valueOf(idPeli), String.valueOf(idUser)});
+        close();
+    }
 }
