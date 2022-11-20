@@ -60,6 +60,19 @@ public class Service {
         }
     }
 
+    public static Pelicula getPeliById(int id){
+        Pelicula pelicula = new Pelicula();
+        try {
+            String path = URL_BASE+"/movie/"+id+"?api_key="+API_KEY+"&language=es-ES";
+            JSONObject jsonObject = getRequestJSONObject(path);
+            pelicula = convertToPelicula(jsonObject);
+        } catch (JSONException e){
+            e.printStackTrace();
+        } finally {
+            return pelicula;
+        }
+    }
+
     private static List<Pelicula> convertToPeliculaList(JSONArray jsonArray) throws JSONException {
         List<Pelicula> peliculas = new ArrayList<Pelicula>();
         for (int i = 0; i < jsonArray.length(); i++) {

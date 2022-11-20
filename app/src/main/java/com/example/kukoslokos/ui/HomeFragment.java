@@ -30,14 +30,6 @@ import java.util.concurrent.ExecutionException;
  */
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     static final Map<String, String> SECCIONES = Map.of("Novedades", "now_playing", "Populares","popular", "Tendencias","top_rated", "Proximamente", "upcoming");
     List<Seccion> seccionList;
@@ -58,8 +50,6 @@ public class HomeFragment extends Fragment {
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,10 +57,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
     }
 
@@ -101,6 +87,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(Pelicula peli) {
                 Log.i("listened", "Cambio de vista a DETALLES DE" + peli.getTitulo());
+                //Creamos el framento de información
+                MovieFragment movieFragment = new MovieFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.mainFragment, movieFragment).commit();
             }
         };
         seccionesView.setAdapter(new SectionAdapter(seccionList, listener));
