@@ -20,4 +20,7 @@
     <string name="registro_id">Nickname</string>
     <string name="registro_apellidos">Apellidos</string>
     <string name="guardar_peli">Guardar</string>
+    <string name="ruleta_girar">Girar</string>
+    <string name="ruleta_titulo">RULETA DIARIA</string>
+    <string name="ruleta_bienvenida">Hola de nuevo\nBuena suerte con tu tirada</string>
 </resources>

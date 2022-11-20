@@ -56,7 +56,7 @@ public class UsuarioDataSource {
             createUsuario(user);
             return user;
         }
-        String query = "SELECT * FROM "+MyDBHelper.TABLA_USUARIO+" WHERE "+MyDBHelper.COL_EMAIL_USUARIO+"="+email+" and "+MyDBHelper.COL_PASSWORD_USUARIO+"="+password;
+        String query = "SELECT * FROM " +MyDBHelper.TABLA_USUARIO+" WHERE "+MyDBHelper.COL_EMAIL_USUARIO+"="+email+" and "+MyDBHelper.COL_PASSWORD_USUARIO+"="+password;
 
         Cursor cursor = database.rawQuery(query, null);
         cursor.moveToFirst();

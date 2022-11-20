@@ -92,11 +92,9 @@ public class RegistroFragment extends Fragment {
         if (nombre.equals("") || apellidos.equals("") || nickname.equals("") || email.equals("") || password.equals("") || repeatPassword.equals("")){
             return false;
         }
-        else {
-            if (!password.equals(repeatPassword)){
-                return false;
-            }
-            return true;
+        if (!password.equals(repeatPassword)){
+            return false;
         }
+       return true;
     }
 }
