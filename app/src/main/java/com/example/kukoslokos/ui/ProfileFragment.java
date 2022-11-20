@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
+import com.example.kukoslokos.datos.UsuarioDataSource;
+import com.example.kukoslokos.model.Usuario;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,6 +66,12 @@ public class ProfileFragment extends Fragment {
         if (sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1)==-1){
             LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.PROFILE);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
+        }else{
+            UsuarioDataSource userds = new UsuarioDataSource(getContext());
+            Usuario user = userds.getUserById(sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1));
+
+            TextView txtCorreo = (TextView) getView().findViewById(R.id.textEmail);
+            txtCorreo.setText(user.getEmail());
         }
     }
 

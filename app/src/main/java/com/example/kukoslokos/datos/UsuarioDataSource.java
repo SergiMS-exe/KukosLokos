@@ -52,7 +52,7 @@ public class UsuarioDataSource {
         Usuario user = new Usuario();
 
         if (email.equals("") && password.equals("")){
-            user = new Usuario(1, "Prueba", "Prueba", "Prueba", "Prueba");
+            user = new Usuario(1, "Prueba", "Prueba", "Prueba@uniovi.es", "Prueba");
             createUsuario(user);
             return user;
         }
