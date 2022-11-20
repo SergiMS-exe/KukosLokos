@@ -19,4 +19,5 @@
     <string name="registro_nombre">Nombre</string>
     <string name="registro_id">Nickname</string>
     <string name="registro_apellidos">Apellidos</string>
+    <string name="guardar_peli">Guardar</string>
 </resources>
