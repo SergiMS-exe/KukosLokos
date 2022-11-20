@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/BaseRuleta"
+        android:layout_height="280dp"
+        android:layout_width="280dp"
+        android:src="@drawable/ic_base_ruleta"
+        app:layout_constraintBottom_toBottomOf="@+id/FlechaRuleta"
+        app:layout_constraintEnd_toEndOf="@+id/FlechaRuleta"
+        app:layout_constraintStart_toStartOf="@+id/FlechaRuleta"
+        app:layout_constraintTop_toTopOf="@+id/FlechaRuleta"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/FlechaRuleta"
+        android:src="@drawable/ic_flecha_ruleta"
+        android:layout_height="350dp"
+        android:layout_width="350dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="200dp" />
+
+
+    <ImageView
+        android:id="@+id/Cuco"
+        android:src="@drawable/ic_cuco"
+        android:layout_height="40dp"
+        android:layout_width="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/FlechaRuleta"
+        app:layout_constraintEnd_toEndOf="@+id/FlechaRuleta"
+        app:layout_constraintStart_toStartOf="@+id/FlechaRuleta"
+        app:layout_constraintTop_toTopOf="@+id/FlechaRuleta"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="200dp" />
+
+    <TextView
+        android:id="@+id/Bienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="RULETA DIARIA"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="48sp"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="54dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/buttonGirar"
+        android:layout_width="156dp"
+        android:layout_height="52dp"
+        android:text="Girar"
+        android:textSize="16sp"
+        android:onClick="girarRuleta"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BaseRuleta"
+        tools:layout_editor_absoluteX="127dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
