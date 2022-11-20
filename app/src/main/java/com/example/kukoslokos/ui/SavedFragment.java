@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -20,7 +19,6 @@ import com.example.kukoslokos.R;
 import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.tasks.GetPeliculasGuardadas;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -72,7 +70,11 @@ public class SavedFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        TextView titleSaved = (TextView) getView().findViewById(R.id.titleSaved);
+
         if (listaPeliculas!=null){
+            titleSaved.setText("Resultado de la busqueda");
+            titleSaved.setTextSize(30);
             showPeliculas(listaPeliculas);
             return;
         }
@@ -90,6 +92,8 @@ public class SavedFragment extends Fragment {
             GetPeliculasGuardadas peliculasGuardadas = new GetPeliculasGuardadas(userId, getContext());
             List<Pelicula> pelisFavs = peliculasGuardadas.execute().get();
 
+            titleSaved.setText("Peliculas guardadas");
+            titleSaved.setTextSize(30);
             showPeliculas(pelisFavs);
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -111,8 +115,5 @@ public class SavedFragment extends Fragment {
         };
 
         favsView.setAdapter(new PeliculasAdapter(pelis, listener));
-
-        TextView noPelis = (TextView) getView().findViewById(R.id.noMovies);
-        noPelis.setVisibility(View.INVISIBLE);
     }
 }

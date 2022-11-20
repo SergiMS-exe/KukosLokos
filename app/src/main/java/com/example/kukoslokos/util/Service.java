@@ -123,4 +123,9 @@ public class Service {
             return peliculas;
         }
     }
+
+    public static void eliminarGuardada(int idUser, int idPeli, Context context) {
+        PeliculasDataSource peliculasDataSource = new PeliculasDataSource(context);
+        peliculasDataSource.eliminarFavPeli(idPeli, idUser);
+    }
 }

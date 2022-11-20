@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Pelicula implements Parcelable {
 
@@ -85,4 +86,13 @@ public class Pelicula implements Parcelable {
             return new Pelicula[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pelicula pelicula = (Pelicula) o;
+        return id == pelicula.id && Objects.equals(titulo, pelicula.titulo) && Objects.equals(argumento, pelicula.argumento) && Objects.equals(pathPoster, pelicula.pathPoster) && Objects.equals(pathBackdrop, pelicula.pathBackdrop) && Objects.equals(generos, pelicula.generos);
+    }
+
 }
