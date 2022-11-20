@@ -49,7 +49,7 @@ public class Service {
         }
     }
 
-    public static List<Pelicula> getPelis(String categoria) {
+    public static List<Pelicula> getPelisByCategoria(String categoria) {
         List<Pelicula> peliculas = new ArrayList<Pelicula>();
         try {
             String path = URL_BASE+"/movie/"+categoria+"?api_key="+API_KEY+"&language=es-ES";
@@ -90,9 +90,10 @@ public class Service {
         String titulo = jsonObject.getString("title");
         String argumento = jsonObject.getString("overview");
         String pathPoster = jsonObject.getString("poster_path");
+        String pathBackdrop = jsonObject.getString("backdrop_path");
         List<String> generos = new ArrayList<String>();//getCategorias((int[])jsonObject.get("genre_ids"));
 
-        return new Pelicula(id, titulo, argumento, pathPoster, generos);
+        return new Pelicula(id, titulo, argumento, pathPoster, pathBackdrop, generos);
     }
 
     private static List<String> getCategorias(int[] categoriasIds) {
@@ -108,5 +109,18 @@ public class Service {
         PeliculasDataSource peliculasDataSource = new PeliculasDataSource(context);
 
         peliculasDataSource.marcarPeliculaComoFav(idPeli, idUser);
+    }
+
+    public static List<Pelicula> searchPelis(String query){
+        List<Pelicula> peliculas = new ArrayList<>();
+        try {
+            String path = URL_BASE+"/search/movie?api_key="+API_KEY+"&language=es-ES&query="+query+"&page=1";
+            JSONObject jsonObject = getRequestJSONObject(path);
+            peliculas = convertToPeliculaList(jsonObject.getJSONArray("results"));
+        } catch (JSONException e){
+            e.printStackTrace();
+        } finally {
+            return peliculas;
+        }
     }
 }

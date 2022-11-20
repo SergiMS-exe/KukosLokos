@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,8 +71,11 @@ public class MovieDetailsFragment extends Fragment {
         super.onResume();
 
         TextView titulo = (TextView) getView().findViewById(R.id.movieTitle);
+        TextView sinopsis = (TextView) getView().findViewById(R.id.textSinopsis);
         ImageView poster = (ImageView) getView().findViewById(R.id.moviePoster);
+        ImageView backdrop = (ImageView) getView().findViewById(R.id.movieBackdrop);
         Button btnGuardar = (Button) getView().findViewById(R.id.btnGuardarPeli);
+        Button btnVerMas = (Button) getView().findViewById(R.id.btnVerMas);
         btnGuardar.setVisibility(View.INVISIBLE);
 
         try {
@@ -80,7 +84,12 @@ public class MovieDetailsFragment extends Fragment {
             Pelicula pelicula = peliById.get();
 
             titulo.setText(pelicula.getTitulo());
+            sinopsis.setText(pelicula.getArgumento());
+            sinopsis.setLines(3);
+
             Picasso.get().load(PeliculaView.BASE_URL_POSTER+pelicula.getPathPoster()).into(poster);
+
+            Picasso.get().load(PeliculaView.BASE_URL_POSTER+pelicula.getPathBackdrop()).into(backdrop);
 
 
             SharedPreferences sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
@@ -96,6 +105,25 @@ public class MovieDetailsFragment extends Fragment {
                     guardarPeli.execute();
                 }
             });
+
+            btnVerMas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (btnVerMas.getText().toString().equalsIgnoreCase("Ver más..."))
+                    {
+                        //129dp
+                        sinopsis.setMaxLines(Integer.MAX_VALUE);
+                        btnVerMas.setText("Ver menos");
+
+                    }
+                    else
+                    {
+                        sinopsis.setMaxLines(3);
+                        btnVerMas.setText("Ver más...");
+                    }
+                }
+            });
+
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
