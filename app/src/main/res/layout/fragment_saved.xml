@@ -13,15 +13,17 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/noMovies"
+            android:id="@+id/titleSaved"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="No hay peliculas que mostrar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/peliculasGuardadas"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
 
