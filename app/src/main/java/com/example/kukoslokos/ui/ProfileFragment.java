@@ -61,7 +61,6 @@ public class ProfileFragment extends Fragment {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
         if (sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1)==-1){
             LoginFragment loginFragment = new LoginFragment();
-
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
         }
     }

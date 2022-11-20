@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.model.Usuario;
 import com.example.kukoslokos.tasks.GetPeliById;
+import com.example.kukoslokos.util.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -54,15 +55,8 @@ public class PeliculasDataSource {
         Cursor cursor = database.rawQuery(query, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            try {
-                GetPeliById peliById = new GetPeliById(cursor.getInt(0));
-                peliById.execute();
-                favs.add(peliById.get());
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Pelicula peliFav = Service.getPeliById(cursor.getInt(0));
+            favs.add(peliFav);
             cursor.moveToNext();
         }
 
