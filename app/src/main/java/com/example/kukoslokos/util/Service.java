@@ -1,5 +1,8 @@
 package com.example.kukoslokos.util;
 
+import android.content.Context;
+
+import com.example.kukoslokos.datos.PeliculasDataSource;
 import com.example.kukoslokos.model.Pelicula;
 
 import org.json.JSONArray;
@@ -99,5 +102,11 @@ public class Service {
 
         }
         return null;
+    }
+
+    public static void guardarPeli(int idUser, int idPeli, Context context) {
+        PeliculasDataSource peliculasDataSource = new PeliculasDataSource(context);
+
+        peliculasDataSource.marcarPeliculaComoFav(idPeli, idUser);
     }
 }

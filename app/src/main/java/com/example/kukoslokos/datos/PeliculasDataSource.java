@@ -33,25 +33,25 @@ public class PeliculasDataSource {
         dbHelper.close();
     }
 
-    public long marcarPeliculaComoFav(Pelicula peli, int idUser) {
+    public long marcarPeliculaComoFav(int idPeli, int idUser) {
+        open();
         ContentValues values = new ContentValues();
 
-        values.put(MyDBHelper.COL_ID_FAVS, peli.getId());
+        values.put(MyDBHelper.COL_ID_FAVS, idPeli);
         values.put(MyDBHelper.COL_ID_USUARIO, idUser);
         values.put(MyDBHelper.COL_FECHA, System.currentTimeMillis());
 
         long insertId = database.insert(MyDBHelper.TABLA_FAVS, null, values);
+        close();
         return insertId;
     }
 
     public List<Pelicula> getPeliculasFavs(int idUser){
-
+        open();
         List<Pelicula> favs = new ArrayList<Pelicula>();
 
         String query = "SELECT * FROM "+MyDBHelper.TABLA_FAVS+" WHERE "+MyDBHelper.COL_ID_USUARIO+"="+idUser;
-
         Cursor cursor = database.rawQuery(query, null);
-
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             try {
@@ -67,8 +67,7 @@ public class PeliculasDataSource {
         }
 
         cursor.close();
-
-
+        close();
         return favs;
     }
 }

@@ -43,12 +43,12 @@ public class UsuarioDataSource {
         values.put(MyDBHelper.COL_PASSWORD_USUARIO, user.getPassword());
 
         long insertId = database.insert(MyDBHelper.TABLA_USUARIO, null, values);
-
+        close();
         return insertId;
     }
 
     public Usuario login(String email, String password){
-
+        open();
         Usuario user = new Usuario();
 
         if (email.equals("") && password.equals("")){
@@ -70,10 +70,12 @@ public class UsuarioDataSource {
         }
 
         cursor.close();
+        close();
         return user;
     }
 
     public Usuario getUserById(int id){
+        open();
         Usuario user = new Usuario();
 
         String query = "SELECT * FROM "+MyDBHelper.TABLA_USUARIO+" WHERE "+MyDBHelper.COL_ID_USUARIO+"="+id;
@@ -91,11 +93,13 @@ public class UsuarioDataSource {
         }
 
         cursor.close();
+        close();
         return user;
 
     }
 
     public Usuario registrar(String nombre, String apellidos, String nickname, String email, String password) {
+        open();
         String lastIdQuery = "SELECT max("+MyDBHelper.COL_ID_USUARIO+") FROM "+MyDBHelper.TABLA_USUARIO;
         Cursor cursor = database.rawQuery(lastIdQuery, null);
         cursor.moveToFirst();
@@ -108,6 +112,7 @@ public class UsuarioDataSource {
         Usuario usuario = new Usuario(lastId+1, nombre,apellidos,email,password);
         createUsuario(usuario);
 
+        close();
         return usuario;
     }
 }
