@@ -29,9 +29,14 @@ public class RuletaFragment extends AppCompatActivity implements Animation.Anima
 
     @Override
     protected void onCreate (Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        cargadoRuleta(savedInstanceState);
+    }
+
+    private void cargadoRuleta(Bundle savedInstanceState) {
         getWindow().addFlags(1024);
         requestWindowFeature(1);
-        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.fragment_ruleta);
 
         b_start = (Button)findViewById(R.id.buttonGirar);
@@ -43,6 +48,7 @@ public class RuletaFragment extends AppCompatActivity implements Animation.Anima
         this.intNumber = this.sharedPreferences.getInt("INT_NUMBER", 11);
         b_Ruleta.setImageDrawable(getResources().getDrawable(R.drawable.ic_base_ruleta));
     }
+
     private void girarRuleta(View view){
 
         if(this.blnButtonRotation){
@@ -68,7 +74,7 @@ public class RuletaFragment extends AppCompatActivity implements Animation.Anima
     @Override
     public void onAnimationEnd(Animation animation) {
         Toast toast = Toast.makeText(this, ""+ String.valueOf((int)(((double)this.intNumber)
-                - Math.floor(((double)this.lngDregrees)/(360.0d/((double)this.intNumber))))) + " ", 0);
+                - Math.floor(((double)this.lngDregrees)/(360.0d/((double)this.intNumber))))) + " ", Toast.LENGTH_SHORT);
         toast.setGravity(49, 0, 0);
         toast.show();
         this.blnButtonRotation = true;
