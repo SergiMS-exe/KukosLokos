@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.kukoslokos.PeliculasAdapter;
 import com.example.kukoslokos.R;
@@ -88,7 +89,7 @@ public class HomeFragment extends Fragment {
             public void onItemClick(Pelicula peli) {
                 Log.i("listened", "Cambio de vista a DETALLES DE" + peli.getTitulo());
                 //Creamos el framento de información
-                MovieFragment movieFragment = new MovieFragment();
+                MovieDetailsFragment movieFragment = MovieDetailsFragment.newInstance(peli.getId());
                 getParentFragmentManager().beginTransaction().replace(R.id.mainFragment, movieFragment).commit();
             }
         };

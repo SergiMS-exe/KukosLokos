@@ -13,6 +13,8 @@ import com.squareup.picasso.Picasso;
 
 public class PeliculaView extends RecyclerView.ViewHolder {
 
+    public static final String BASE_URL_POSTER="https://image.tmdb.org/t/p/w500";
+
     ImageView poster;
     TextView titulo;
 
@@ -26,7 +28,7 @@ public class PeliculaView extends RecyclerView.ViewHolder {
     public void loadData(Pelicula peli, final PeliculasAdapter.OnItemClickListener listener){
         titulo.setText(peli.getTitulo());
         Picasso.get()
-                .load("https://image.tmdb.org/t/p/w500"+peli.getPathPoster()).into(poster);
+                .load(BASE_URL_POSTER+peli.getPathPoster()).into(poster);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
