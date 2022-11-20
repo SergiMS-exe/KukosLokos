@@ -49,7 +49,7 @@ public class Service {
         }
     }
 
-    public static List<Pelicula> getPelis(String categoria) {
+    public static List<Pelicula> getPelisByCategoria(String categoria) {
         List<Pelicula> peliculas = new ArrayList<Pelicula>();
         try {
             String path = URL_BASE+"/movie/"+categoria+"?api_key="+API_KEY+"&language=es-ES";
@@ -108,5 +108,18 @@ public class Service {
         PeliculasDataSource peliculasDataSource = new PeliculasDataSource(context);
 
         peliculasDataSource.marcarPeliculaComoFav(idPeli, idUser);
+    }
+
+    public static List<Pelicula> searchPelis(String query){
+        List<Pelicula> peliculas = new ArrayList<>();
+        try {
+            String path = URL_BASE+"/search/movie?api_key="+API_KEY+"&language=es-ES&query="+query+"&page=1";
+            JSONObject jsonObject = getRequestJSONObject(path);
+            peliculas = convertToPeliculaList(jsonObject.getJSONArray("results"));
+        } catch (JSONException e){
+            e.printStackTrace();
+        } finally {
+            return peliculas;
+        }
     }
 }
