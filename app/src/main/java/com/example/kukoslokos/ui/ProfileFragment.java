@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +61,7 @@ public class ProfileFragment extends Fragment {
         super.onStart();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
         if (sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1)==-1){
-            LoginFragment loginFragment = new LoginFragment();
-
+            LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.PROFILE);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
         }
     }
