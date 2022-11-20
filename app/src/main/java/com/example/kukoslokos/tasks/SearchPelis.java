@@ -7,16 +7,17 @@ import com.example.kukoslokos.util.Service;
 
 import java.util.List;
 
-public class GetPelis extends AsyncTask<Void, Void, List<Pelicula>> {
+public class SearchPelis extends AsyncTask<Void, Void, List<Pelicula>> {
 
-    String categoria;
+    String query;
 
-    public GetPelis(String categoria){
-        this.categoria=categoria;
+    public SearchPelis(String query) {
+        this.query=query;
     }
+
 
     @Override
     protected List<Pelicula> doInBackground(Void... voids) {
-        return Service.getPelisByCategoria(categoria);
+        return Service.searchPelis(query);
     }
 }
