@@ -16,7 +16,7 @@
             android:id="@+id/movieTitle"
             android:layout_width="175dp"
             android:layout_height="142dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="17dp"
             android:layout_marginTop="52dp"
             android:layout_marginEnd="27dp"
             android:singleLine="false"
@@ -44,20 +44,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="152dp"
             android:text="@string/guardar_peli"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movieBackdrop" />
 
         <ImageView
             android:id="@+id/movieBackdrop"
             android:layout_width="380dp"
             android:layout_height="173dp"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:contentDescription="banner"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
@@ -65,9 +65,9 @@
             android:id="@+id/linearLayout"
             android:layout_width="382dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="288dp"
             android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
