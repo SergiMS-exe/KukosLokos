@@ -58,7 +58,6 @@ public class MainRecyclerTab extends AppCompatActivity {
                 case R.id.profile:
 
                     ProfileFragment profileFragment = new ProfileFragment();
-
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, profileFragment).commit();
 
                     return true;

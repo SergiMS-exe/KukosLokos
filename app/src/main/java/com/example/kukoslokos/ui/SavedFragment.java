@@ -68,7 +68,7 @@ public class SavedFragment extends Fragment {
         int userId = sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1);
 
         if (userId==-1){
-            LoginFragment loginFragment = new LoginFragment();
+            LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.SAVED);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
             return;
         }
