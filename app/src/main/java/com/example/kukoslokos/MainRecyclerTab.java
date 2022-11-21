@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
@@ -194,6 +195,10 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
             rotateAnimation.setInterpolator(new DecelerateInterpolator());
             rotateAnimation.setAnimationListener(this);
             b_Ruleta.startAnimation(rotateAnimation);
+
+            Animation animationGuardar = AnimationUtils.loadAnimation(MainRecyclerTab.this, R.anim.blink_anim);
+            buttonGirar.setAnimation(animationGuardar);
+
         }
     }
 
