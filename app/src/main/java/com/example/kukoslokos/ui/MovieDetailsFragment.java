@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -120,6 +122,10 @@ public class MovieDetailsFragment extends Fragment {
                 public void onClick(View view) {
                     GuardarPeli guardarPelicula = new GuardarPeli(userId, pelicula.getId(), getContext(), finalAccion);
                     guardarPelicula.execute();
+
+                    Animation animationGuardar = AnimationUtils.loadAnimation(getContext(), R.anim.bounce);
+                    btnGuardar.setAnimation(animationGuardar);
+
                     btnGuardar.setText(finalTextButton);
                 }
             });
