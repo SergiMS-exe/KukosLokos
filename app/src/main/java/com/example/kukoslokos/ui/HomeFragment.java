@@ -1,5 +1,9 @@
 package com.example.kukoslokos.ui;
 
+import static com.example.kukoslokos.MainRecyclerTab.PELICULA_SELECCIONADA;
+
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
+import com.example.kukoslokos.DetailsContent;
+import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.PeliculasAdapter;
 import com.example.kukoslokos.R;
 import com.example.kukoslokos.SectionAdapter;
@@ -89,12 +95,19 @@ public class HomeFragment extends Fragment {
             public void onItemClick(Pelicula peli) {
                 Log.i("listened", "Cambio de vista a DETALLES DE" + peli.getTitulo());
                 //Creamos el framento de información
-                MovieDetailsFragment movieFragment = MovieDetailsFragment.newInstance(peli.getId());
-                getParentFragmentManager().beginTransaction().replace(R.id.mainFragment, movieFragment).commit();
+                clickOnItem(peli);
             }
         };
         seccionesView.setAdapter(new SectionAdapter(seccionList, listener));
 
+    }
+
+    public void clickOnItem(Pelicula peli){
+        //Paso el modo de apertura
+        Intent intent = new Intent(getContext(), DetailsContent.class);
+        intent.putExtra(PELICULA_SELECCIONADA, peli.getId());
+        //Transacion de barrido
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
     private List<Seccion> createSections(HashMap<String, List<Pelicula>> peliculasEnSecciones) {

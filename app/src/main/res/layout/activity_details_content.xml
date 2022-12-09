@@ -16,63 +16,59 @@
             android:id="@+id/movieTitle"
             android:layout_width="153dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="52dp"
-            android:layout_marginEnd="17dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="30dp"
             android:singleLine="false"
             android:text="Peli title"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/moviePoster"
-            app:layout_constraintHorizontal_bias="0.318"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/movieBackdrop" />
 
         <ImageView
             android:id="@+id/moviePoster"
             android:layout_width="195dp"
             android:layout_height="251dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
             android:contentDescription="caratula"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movieTitle" />
 
         <Button
             android:id="@+id/btnGuardarPeli"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="15dp"
             android:text="@string/guardar_peli"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.708"
+            app:layout_constraintStart_toEndOf="@+id/movieTitle"
             app:layout_constraintTop_toBottomOf="@+id/movieBackdrop" />
 
         <ImageView
             android:id="@+id/movieBackdrop"
-            android:layout_width="380dp"
+            android:layout_width="0dp"
             android:layout_height="173dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:contentDescription="banner"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="382dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="288dp"
+            android:layout_marginTop="36dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.551"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/moviePoster">
 
             <TextView
                 android:id="@+id/textSinopsis"

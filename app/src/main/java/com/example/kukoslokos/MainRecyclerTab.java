@@ -36,6 +36,8 @@ import java.util.concurrent.ExecutionException;
 
 public class MainRecyclerTab extends AppCompatActivity implements Animation.AnimationListener {
 
+    public static final String PELICULA_SELECCIONADA = "pelicula_seleccionada";
+
     //Atributos de la ruleta
     boolean blnButtonRotation = true;
     boolean finRuleta = false;

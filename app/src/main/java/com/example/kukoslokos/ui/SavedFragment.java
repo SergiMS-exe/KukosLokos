@@ -1,6 +1,10 @@
 package com.example.kukoslokos.ui;
 
+import static com.example.kukoslokos.MainRecyclerTab.PELICULA_SELECCIONADA;
+
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -13,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.kukoslokos.DetailsContent;
 import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.PeliculasAdapter;
 import com.example.kukoslokos.R;
@@ -107,13 +112,18 @@ public class SavedFragment extends Fragment {
         PeliculasAdapter.OnItemClickListener listener = new PeliculasAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Pelicula peli) {
-                Log.i("listened", "Cambio de vista a DETALLES DE" + peli.getTitulo());
-                //Creamos el framento de información
-                MovieDetailsFragment movieFragment = MovieDetailsFragment.newInstance(peli.getId());
-                getParentFragmentManager().beginTransaction().replace(R.id.mainFragment, movieFragment).commit();
+                clickOnItem(peli);
             }
         };
 
         favsView.setAdapter(new PeliculasAdapter(pelis, listener));
+    }
+
+    public void clickOnItem(Pelicula peli){
+        //Paso el modo de apertura
+        Intent intent = new Intent(getContext(), DetailsContent.class);
+        intent.putExtra(PELICULA_SELECCIONADA, peli.getId());
+        //Transacion de barrido
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 }
