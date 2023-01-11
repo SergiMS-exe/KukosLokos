@@ -1,11 +1,14 @@
 package com.example.kukoslokos;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -42,6 +45,7 @@ public class DetailsContent extends AppCompatActivity {
         Button btnGuardar = (Button) findViewById(R.id.btnGuardarPeli);
         Button btnVerMas = (Button) findViewById(R.id.btnVerMas);
         btnGuardar.setVisibility(View.INVISIBLE);
+
 
         try {
             GetPeliById peliById = new GetPeliById(idPeli);
@@ -115,5 +119,22 @@ public class DetailsContent extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_up, menu);
+
+        menu.findItem(R.id.search).setVisible(false);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.backButton)
+            onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }

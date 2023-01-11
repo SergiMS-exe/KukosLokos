@@ -108,6 +108,8 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
 
         getMenuInflater().inflate(R.menu.menu_up, menu);
 
+        menu.findItem(R.id.backButton).setVisible(false);
+
         MenuItem menuItem = menu.findItem(R.id.search);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Escriba para buscar");
