@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.kukoslokos.datos.PeliculasDataSource;
 import com.example.kukoslokos.model.Pelicula;
+import com.example.kukoslokos.model.Serie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,4 +129,33 @@ public class Service {
         PeliculasDataSource peliculasDataSource = new PeliculasDataSource(context);
         peliculasDataSource.eliminarFavPeli(idPeli, idUser);
     }
+
+   /* //------------------------- Metodos para las series ----------------------------
+    // /tv/{tv_id}
+    // String path = URL_BASE + "/tv/" + idSerie + "?api_key="+API_KEY "&language=es-ES";
+    // TODO: Hacer Serie Parcelable
+
+    private static Serie convertToSerie(JSONObject jsonObject) throws JSONException {
+        int id = jsonObject.getInt("id");
+        String titulo = jsonObject.getString("title");
+        String argumento = jsonObject.getString("overview");
+        String pathPoster = jsonObject.getString("poster_path");
+        String pathBackdrop = jsonObject.getString("backdrop_path");
+        List<String> generos = new ArrayList<String>();//getCategorias((int[])jsonObject.get("genre_ids"));
+
+        return new Serie(id, titulo, argumento, pathPoster, pathBackdrop, generos);
+    }
+
+    public static Serie getSerieById(int id){
+        Serie serie = new Serie();
+        try {
+            String path = URL_BASE+"/movie/"+id+"?api_key="+API_KEY+"&language=es-ES";
+            JSONObject jsonObject = getRequestJSONObject(path);
+            serie = convertToSerie(jsonObject);
+        } catch (JSONException e){
+            e.printStackTrace();
+        } finally {
+            return serie;
+        }
+    }*/
 }

@@ -1,8 +1,11 @@
 package com.example.kukoslokos.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class Serie {
+public class Serie extends Pelicula {
     int id;
     String titulo;
     String argumento;
