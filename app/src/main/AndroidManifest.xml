@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.kukoslokos">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,6 +17,9 @@
         android:theme="@style/Theme.KukosLokos"
         tools:targetApi="31">
         <activity
+            android:name=".DetailsContent"
+            android:exported="false" />
+        <activity
             android:name=".MainRecyclerTab"
             android:exported="true">
             <intent-filter>
@@ -23,9 +29,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

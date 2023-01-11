@@ -36,6 +36,8 @@ import java.util.concurrent.ExecutionException;
 
 public class MainRecyclerTab extends AppCompatActivity implements Animation.AnimationListener {
 
+    public static final String PELICULA_SELECCIONADA = "pelicula_seleccionada";
+
     //Atributos de la ruleta
     boolean blnButtonRotation = true;
     boolean finRuleta = false;
@@ -105,6 +107,8 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_up, menu);
+
+        menu.findItem(R.id.backButton).setVisible(false);
 
         MenuItem menuItem = menu.findItem(R.id.search);
         searchView = (SearchView) menuItem.getActionView();
