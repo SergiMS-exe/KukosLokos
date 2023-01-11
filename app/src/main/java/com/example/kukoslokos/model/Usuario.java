@@ -1,12 +1,20 @@
 package com.example.kukoslokos.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class Usuario {
 
+    @SerializedName("_id")
     int id;
     String nombre;
     String apellidos;
     String email;
     String password;
+    @SerializedName("points")
+    int puntos;
+    List<Integer> moviesSaved;
 
     public Usuario(int id, String nombre, String apellidos, String email, String password) {
         this.id = id;
@@ -14,6 +22,22 @@ public class Usuario {
         this.apellidos = apellidos;
         this.email = email;
         this.password = password;
+    }
+
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
+
+    public List<Integer> getMoviesSaved() {
+        return moviesSaved;
+    }
+
+    public void setMoviesSaved(List<Integer> moviesSaved) {
+        this.moviesSaved = moviesSaved;
     }
 
     public Usuario(){}
