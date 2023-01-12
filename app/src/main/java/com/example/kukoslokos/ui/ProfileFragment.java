@@ -2,19 +2,19 @@ package com.example.kukoslokos.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
 
 import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
@@ -28,6 +28,7 @@ import com.example.kukoslokos.model.Usuario;
  */
 public class ProfileFragment extends Fragment {
 
+    boolean modoNoche;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -64,6 +65,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
         if (sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1)==-1){
             LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.PROFILE);
@@ -74,6 +76,20 @@ public class ProfileFragment extends Fragment {
 
             TextView txtCorreo = (TextView) getView().findViewById(R.id.textEmail);
             txtCorreo.setText(user.getEmail());
+        }
+
+        ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
+        int currentNightMode = getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Tema claro,
+                imgBoton.setImageResource(R.drawable.ic_sun);
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                // Tema oscuro
+                imgBoton.setImageResource(R.drawable.ic_moon);
+                break;
         }
     }
 
@@ -95,5 +111,29 @@ public class ProfileFragment extends Fragment {
                 onStart();
             }
         });
+        ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
+        imgBoton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtengo el tema actual
+                int currentNightMode = getResources().getConfiguration().uiMode
+                        & Configuration.UI_MODE_NIGHT_MASK;
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        // Tema claro, cambio a oscuro
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        modoNoche = true;
+                        imgBoton.setImageResource(R.drawable.ic_moon);
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        // Tema oscuro, cambio a claro
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        modoNoche = false;
+                        imgBoton.setImageResource(R.drawable.ic_sun);
+                        break;
+                }
+            }
+        });
     }
+
 }
