@@ -70,15 +70,15 @@ public class ProfileFragment extends Fragment {
         super.onStart();
 
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
-        if (sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1)==-1){
+        if (sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "")==""){
             LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.PROFILE);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
         }else{
             UsuarioDataSource userds = new UsuarioDataSource(getContext());
-            Usuario user = userds.getUserById(sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1));
+            //Usuario user = userds.getUserById(sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1));
 
             TextView txtCorreo = (TextView) getView().findViewById(R.id.textEmail);
-            txtCorreo.setText(user.getEmail());
+            //txtCorreo.setText(user.getEmail());
         }
 
         ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
@@ -117,6 +117,9 @@ public class ProfileFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 editor.clear().apply();
+
+                MainRecyclerTab.usuarioEnSesion=null;
+
                 onStart();
             }
         });

@@ -4,9 +4,12 @@ import retrofit2.Retrofit;
 
 public class ApiUtil {
 
-    public static KukosApi createKukosApi() {
-            Retrofit retrofit= RetrofitClient.getClient(KukosApi.BASE_URL);
+    private static KukosApi kukosApi;
 
-        return retrofit.create(KukosApi.class);
+    public static KukosApi getKukosApi() {
+        if (kukosApi==null)
+            kukosApi=RetrofitClient.getClient(KukosApi.BASE_URL).create(KukosApi.class);
+
+        return kukosApi;
     }
 }
