@@ -13,14 +13,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
-import com.example.kukoslokos.datos.UsuarioDataSource;
-import com.example.kukoslokos.model.Usuario;
 
 import java.util.Random;
 
@@ -69,16 +66,23 @@ public class ProfileFragment extends Fragment {
         super.onStart();
 
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
-        if (sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "")==""){
+        TextView txtCorreo = null;
+        if (sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "") == "") {
             LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.PROFILE);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
-        }else{
-            TextView txtCorreo = (TextView) getView().findViewById(R.id.textEmail);
+        } else {
+            txtCorreo = (TextView) getView().findViewById(R.id.textEmail);
             txtCorreo.setText(MainRecyclerTab.usuarioEnSesion.getEmail());
         }
 
         ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
         ImageView imgCambio = (ImageView) getView().findViewById(R.id.imageCambio);
+        ImageView imgMarco = (ImageView) getView().findViewById(R.id.imageMarcoNivel);
+
+        TextView txtNivel = (TextView) getView().findViewById(R.id.textNivel);
+        TextView txtPuntos = (TextView) getView().findViewById(R.id.textPuntos);
+        TextView txtNickName = (TextView) getView().findViewById(R.id.textNickname);
+
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
         switch (currentNightMode) {
@@ -93,6 +97,17 @@ public class ProfileFragment extends Fragment {
                 imgCambio.setImageResource(R.drawable.ic_cambio_moon);
                 break;
         }
+        int nivel = MainRecyclerTab.usuarioEnSesion.getPuntos() / 200;
+        int puntosRestantes = MainRecyclerTab.usuarioEnSesion.getPuntos() % 200;
+        //txtNickName.setText(MainRecyclerTab.usuarioEnSesion.getNickname());
+        txtNivel.setText("" + nivel);
+        txtPuntos.setText(puntosRestantes + "/200");
+
+        int[] marcos = {R.drawable.ic_lvl_0, R.drawable.ic_lvl_10,R.drawable.ic_lvl_20,
+                R.drawable.ic_lvl_30, R.drawable.ic_lvl_40, R.drawable.ic_lvl_50};
+
+        imgMarco.setImageResource(marcos[nivel/10]);
+
     }
 
     @Override
@@ -140,6 +155,7 @@ public class ProfileFragment extends Fragment {
                         modoNoche = false;
                         imgBoton.setImageResource(R.drawable.ic_sun);
                         imgCambio.setImageResource(R.drawable.ic_cambio_sun);
+
                         break;
                 }
             }
