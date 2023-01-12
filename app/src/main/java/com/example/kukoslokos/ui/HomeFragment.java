@@ -24,6 +24,7 @@ import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.model.Seccion;
 import com.example.kukoslokos.tasks.GetGeneros;
 import com.example.kukoslokos.tasks.GetPelis;
+import com.example.kukoslokos.tasks.GetPelisByCategory;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,8 +46,6 @@ public class HomeFragment extends Fragment {
             "Populares","popular", "Tendencias","top_rated",
             "Proximamente", "upcoming");
 
-    GetGeneros cargarGeneros = new GetGeneros();
-    HashMap<String, Integer> GENEROS;
     List<Seccion> seccionList;
 
     public HomeFragment() {
@@ -66,6 +65,7 @@ public class HomeFragment extends Fragment {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -130,20 +130,34 @@ public class HomeFragment extends Fragment {
 
     private List<Pelicula> cargarPeliculas(String categoria) {
         List<Pelicula> peliculasPop = new ArrayList<Pelicula>();
+        GetPelis populares = new GetPelis(categoria);
+        GetGeneros cargarGeneros = new GetGeneros();
         try {
             //TODO: Si está puesto "Todos los generos", esto
             // si no cargamos
-            if(true) {
-                GetPelis populares = new GetPelis(categoria);
+            if(MainRecyclerTab.selectedItem == 0) {
                 populares.execute();
-                peliculasPop = populares.get();
+                return populares.get();
             }else {
             // Filtrar por el genero seleccionado
-            cargarGeneros.execute();
-            GENEROS = cargarGeneros.get();
+                cargarGeneros.execute();
+                HashMap<String, Integer> GENEROS = cargarGeneros.get();
 
+            populares.execute();
+            peliculasPop = populares.get();
+            //TODO:
+            // Mirar la categoria filtada en el menú
+                String generoActual = MainRecyclerTab.generosMain[MainRecyclerTab.selectedItem];
+            // Buscar el valor en GENEROS
+                int gerenoActual_id = GENEROS.get(generoActual);
+            // Llamar a GetPelisByCategory pasarle la categoria a filtrar (con la lista de pelis)
+                GetPelisByCategory pelisConGenero = new GetPelisByCategory(gerenoActual_id, peliculasPop);
+                pelisConGenero.execute();
+                List<Pelicula> wiwi = pelisConGenero.get();
+                // Devolver la lista de peliculas filtradas
+                return pelisConGenero.get();
             }
-            return peliculasPop;
+            //return peliculasPop;
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

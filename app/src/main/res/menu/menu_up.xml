@@ -5,6 +5,12 @@
     tools:context="es.uniovi.eii.sdm.MainRecycler">
 
     <item
+        android:id="@+id/filter"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Sort"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/search"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"

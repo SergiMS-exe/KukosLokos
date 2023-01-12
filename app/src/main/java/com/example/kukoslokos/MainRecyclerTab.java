@@ -24,7 +24,9 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -54,6 +56,11 @@ import retrofit2.Response;
 public class MainRecyclerTab extends AppCompatActivity implements Animation.AnimationListener {
 
     public static final String PELICULA_SELECCIONADA = "pelicula_seleccionada";
+    public static int selectedItem = 0;
+    public static String[] generosMain = {"Todos los generos","Acción", "Aventura", "Animación", "Comedia",
+            "Crimen", "Documental", "Drama", "Familia", "Fantasía", "Historia", "Terror",
+            "Música", "Misterio", "Romance", "Ciencia ficción", "Pelicula de TV", "Suspense",
+            "Bélica", "Western"};
 
     //Atributos de la ruleta
     boolean blnButtonRotation = true;
@@ -187,7 +194,6 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_up, menu);
-
         menu.findItem(R.id.backButton).setVisible(false);
 
         MenuItem menuItem = menu.findItem(R.id.search);
@@ -224,6 +230,17 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
                 return false;
             }
         });
+
+        //TODO:
+        MenuItem menuItemSort = menu.findItem(R.id.filter);
+        menuItemSort.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                showRadioButtonDialog();
+                return true;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -336,4 +353,27 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
     public void onAnimationRepeat(Animation animation) {
 
     }
+
+    private void showRadioButtonDialog() {
+
+        // Save the selected item index
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecciona el genero");
+        builder.setSingleChoiceItems(generosMain, selectedItem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                selectedItem = which;
+            }
+        });
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainRecyclerTab.this, "Has seleccionado: " + generosMain[selectedItem], Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancelar", null);
+        builder.create().show();
+    }
+
 }
