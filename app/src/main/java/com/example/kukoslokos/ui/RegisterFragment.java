@@ -1,5 +1,6 @@
 package com.example.kukoslokos.ui;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ public class RegisterFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String PARENT = "parent";
 
-
+    private String parent;
 
     private SharedPreferences sharedPreferences;
     private int userId;
@@ -86,6 +87,7 @@ public class RegisterFragment extends Fragment {
         EditText editTextEmailAddress = (EditText) getView().findViewById(R.id.editTextEmailAddress);
         EditText editTextContrasenaRegistro = (EditText) getView().findViewById(R.id.editTextContrasenaRegistro);
         EditText editTextContrasenaRegistro2 = (EditText) getView().findViewById(R.id.editTextContrasenaRegistro2);
+        sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
 
         Button btnFinalizarRegistro = getView().findViewById(R.id.btnFinalizarRegistro);
         btnFinalizarRegistro.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +131,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private void peticionLogin(String userName, String password){
+        sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
         Call<Usuario> call = ApiUtil.getKukosApi().login(new LoginBody(userName, password));
 
         call.enqueue(new Callback<Usuario>() {
