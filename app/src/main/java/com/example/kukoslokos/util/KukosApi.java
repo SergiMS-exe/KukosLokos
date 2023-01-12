@@ -4,6 +4,7 @@ import com.example.kukoslokos.model.Usuario;
 import com.example.kukoslokos.util.bodies.LoginBody;
 import com.example.kukoslokos.util.bodies.RegisterBody;
 import com.example.kukoslokos.util.bodies.SaveMovieBody;
+import com.example.kukoslokos.util.bodies.UpdateProfilePhoto;
 import com.example.kukoslokos.util.bodies.UpdateRuleBody;
 
 import retrofit2.Call;
@@ -35,6 +36,11 @@ public interface KukosApi {
     @PUT("updateLastRule")
     Call<Usuario> updateLastRule(
             @Body UpdateRuleBody updateRuleBody
+    );
+
+    @PUT("updateProfilePhoto")
+    Call<Usuario> updateProfilePhoto(
+            @Body UpdateProfilePhoto updateProfilePhotoBody
     );
 
     @POST("saveMovie")
