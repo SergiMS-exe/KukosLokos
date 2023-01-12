@@ -74,11 +74,8 @@ public class ProfileFragment extends Fragment {
             LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.PROFILE);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
         }else{
-            UsuarioDataSource userds = new UsuarioDataSource(getContext());
-            //Usuario user = userds.getUserById(sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1));
-
             TextView txtCorreo = (TextView) getView().findViewById(R.id.textEmail);
-            //txtCorreo.setText(user.getEmail());
+            txtCorreo.setText(MainRecyclerTab.usuarioEnSesion.getEmail());
         }
 
         ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
