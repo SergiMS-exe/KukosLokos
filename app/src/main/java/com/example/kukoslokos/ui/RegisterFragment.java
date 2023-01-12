@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatDelegate;
+
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
@@ -18,6 +18,7 @@ import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
 import com.example.kukoslokos.model.Usuario;
 import com.example.kukoslokos.util.ApiUtil;
+import com.example.kukoslokos.util.bodies.LoginBody;
 import com.example.kukoslokos.util.bodies.RegisterBody;
 
 import retrofit2.Call;
@@ -111,13 +112,8 @@ public class RegisterFragment extends Fragment {
                     case 200:
                         Usuario user = response.body(); //Cogemos el usuario
 
-                        SharedPreferences.Editor editor = sharedPreferences.edit(); //Guardamos el usuario en sesion
-                        editor.putString(MainRecyclerTab.USER_ID_KEY, user.getId());
-                        editor.apply();
+                        peticionLogin(nickName, password);
 
-                        MainRecyclerTab.usuarioEnSesion=user;
-
-                        goToHome();
                         break;
                     default:
                         call.cancel();
@@ -132,8 +128,57 @@ public class RegisterFragment extends Fragment {
         });
     }
 
+    private void peticionLogin(String userName, String password){
+        Call<Usuario> call = ApiUtil.getKukosApi().login(new LoginBody(userName, password));
+
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                switch (response.code()){
+                    case 200:
+                        Usuario user = response.body(); //Cogemos el usuario
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit(); //Guardamos el usuario en sesion
+                        editor.putString(MainRecyclerTab.USER_ID_KEY, user.getId());
+                        editor.apply();
+
+                        MainRecyclerTab.usuarioEnSesion=user;
+
+                        goToParent();
+                        break;
+                    case 404:
+                        Toast.makeText(getContext(), "Incorrect email or password", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        call.cancel();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.e("Login - error", t.toString());
+            }
+        });
+    }
+
+    private void goToParent() {
+        ProfileFragment profileFragment = new ProfileFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, profileFragment).commit();
+
+    }
+
     private void goToHome() {
-        recreate();
+        int currentNightMode = getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+        }
     }
 
     private boolean checkFields(String nombre, String apellidos, String nickname, String email, String password, String repeatPassword){
