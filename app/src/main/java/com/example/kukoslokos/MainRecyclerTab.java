@@ -59,7 +59,7 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
     public static int selectedItem = 0;
     public static String[] generosMain = {"Todos los generos","Acción", "Aventura", "Animación", "Comedia",
             "Crimen", "Documental", "Drama", "Familia", "Fantasía", "Historia", "Terror",
-            "Música", "Misterio", "Romance", "Ciencia ficción", "Pelicula de TV", "Suspense",
+            "Música", "Misterio", "Romance", "Ciencia ficción", "Suspense",
             "Bélica", "Western"};
 
     //Atributos de la ruleta
