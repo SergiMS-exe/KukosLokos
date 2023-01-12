@@ -1,19 +1,10 @@
 package com.example.kukoslokos;
 
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
-import androidx.annotation.NonNull;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.DialogInterface;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,14 +30,11 @@ import com.example.kukoslokos.ui.HomeFragment;
 import com.example.kukoslokos.ui.ProfileFragment;
 import com.example.kukoslokos.ui.SavedFragment;
 import com.example.kukoslokos.util.ApiUtil;
-import com.example.kukoslokos.util.Service;
 import com.example.kukoslokos.util.bodies.UpdateRuleBody;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
@@ -256,7 +244,7 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
             homeMenu();
         } else {
             getWindow().addFlags(1024);
-            requestWindowFeature(1);
+            //requestWindowFeature(1);
 
             setContentView(R.layout.fragment_ruleta);
 

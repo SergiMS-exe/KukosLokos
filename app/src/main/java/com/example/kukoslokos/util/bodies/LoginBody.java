@@ -1,11 +1,11 @@
 package com.example.kukoslokos.util.bodies;
 
 public class LoginBody {
-    private String email;
+    private String user;
     private String password;
 
-    public LoginBody(String email, String password) {
-        this.email = email;
+    public LoginBody(String user, String password) {
+        this.user = user;
         this.password = password;
     }
 }
