@@ -7,7 +7,7 @@ import java.util.List;
 public class Usuario {
 
     @SerializedName("_id")
-    int id;
+    String id;
     String nombre;
     String apellidos;
     String email;
@@ -15,13 +15,24 @@ public class Usuario {
     @SerializedName("points")
     int puntos;
     List<Integer> moviesSaved;
+    double lastRule;
 
-    public Usuario(int id, String nombre, String apellidos, String email, String password) {
+    public Usuario(String id, String nombre, String email, String password, int puntos, List<Integer> moviesSaved, double lastRule) {
         this.id = id;
         this.nombre = nombre;
-        this.apellidos = apellidos;
         this.email = email;
         this.password = password;
+        this.puntos = puntos;
+        this.moviesSaved = moviesSaved;
+        this.lastRule = lastRule;
+    }
+
+    public double getLastRule() {
+        return lastRule;
+    }
+
+    public void setLastRule(double lastRule) {
+        this.lastRule = lastRule;
     }
 
     public int getPuntos() {
@@ -42,11 +53,11 @@ public class Usuario {
 
     public Usuario(){}
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

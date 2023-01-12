@@ -7,9 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,16 +26,26 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.kukoslokos.model.Pelicula;
+import com.example.kukoslokos.model.Usuario;
 import com.example.kukoslokos.tasks.SearchPelis;
 import com.example.kukoslokos.ui.HomeFragment;
 import com.example.kukoslokos.ui.LoginFragment;
 import com.example.kukoslokos.ui.ProfileFragment;
 import com.example.kukoslokos.ui.SavedFragment;
+import com.example.kukoslokos.util.ApiUtil;
+import com.example.kukoslokos.util.Service;
+import com.example.kukoslokos.util.bodies.UpdateRuleBody;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainRecyclerTab extends AppCompatActivity implements Animation.AnimationListener {
 
@@ -55,14 +68,76 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
     // key for storing user id.
     public static final String USER_ID_KEY = "user_id_key";
 
+    //Usuario en sesion
+    public static Usuario usuarioEnSesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        cargadoRuleta();
+        this.sharedPreferences = getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
 
+        if (!sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "").equals("")){
+            peticionGetUserById();
+        } else {
+            finRuleta=true;
+            homeMenu();
+        }
+    }
 
+    private void peticionGetUserById() {
+        Call<Usuario> call = ApiUtil.getKukosApi().getUserById(sharedPreferences.getString(USER_ID_KEY, ""));
+
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                switch (response.code()){
+                    case 200:
+                        MainRecyclerTab.usuarioEnSesion=response.body();
+                        //Comprobamos si ya han pasado 24 horas desde la ultima ruleta
+                        long currentTimestamp = System.currentTimeMillis();
+                        long elapsedTime = currentTimestamp - (long) usuarioEnSesion.getLastRule();
+                        long oneDayInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+                        if (elapsedTime >= oneDayInMillis){
+                            cargadoRuleta();
+                        } else {
+                            finRuleta=true;
+                            homeMenu();
+                        }
+                        break;
+                    default:
+                        call.cancel();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.e("Lista - error", t.toString());
+            }
+        });
+    }
+
+    private void peticionUpdateLastRule() {
+        Call<Usuario> call = ApiUtil.getKukosApi().updateLastRule(new UpdateRuleBody(sharedPreferences.getString(USER_ID_KEY, ""), getPrice()));
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                switch (response.code()){
+                    case 200:
+                        MainRecyclerTab.usuarioEnSesion=response.body();
+                        break;
+                    default:
+                        call.cancel();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.e("Lista - error", t.toString());
+            }
+        });
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navBarListener
@@ -168,7 +243,7 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
             b_Ruleta = (ImageView) findViewById(R.id.BaseRuleta);
             f_Ruleta = (ImageView) findViewById(R.id.FlechaRuleta);
 
-            this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
             this.intNumber = this.sharedPreferences.getInt("INT_NUMBER", 11);
             b_Ruleta.setImageDrawable(getResources().getDrawable(R.drawable.ic_base_ruleta));
             getSupportActionBar().hide();
@@ -212,15 +287,27 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
         buttonGirar.setVisibility(View.VISIBLE);
     }
 
+    private int getPrice(){
+        int[] puntos = new int[]{25, 200, 50, 150, 25, 75, 50, 75, 25, 50, 100};
+
+        int puntosGanados = puntos[((int)(((double)this.intNumber)
+                - Math.floor(((double)this.lngDregrees)/(360.0d/((double)this.intNumber)))))-1];
+        return puntosGanados;
+    }
+
     @Override
     public void onAnimationEnd(Animation animation) {
-        int[] puntos = new int[]{25, 200, 50, 150, 25, 75, 50, 75, 25, 50, 100};
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Felicidades ");
-        builder.setMessage("Has ganado " + puntos[((int)(((double)this.intNumber)
-                - Math.floor(((double)this.lngDregrees)/(360.0d/((double)this.intNumber)))))-1] + " puntos");
-        builder.setPositiveButton("Aceptar", null);
+        builder.setMessage("Has ganado " + getPrice() + " puntos");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                peticionUpdateLastRule();
+            }
+        });
 
         AlertDialog dialog = builder.create();
         dialog.show();
