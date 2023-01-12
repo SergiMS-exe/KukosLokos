@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,12 @@ import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
 import com.example.kukoslokos.datos.UsuarioDataSource;
 import com.example.kukoslokos.model.Usuario;
+import com.example.kukoslokos.util.ApiUtil;
+import com.example.kukoslokos.util.bodies.LoginBody;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginFragment extends Fragment {
 
@@ -103,19 +110,46 @@ public class LoginFragment extends Fragment {
     }
 
     private void login(String email, String password){
-        /*if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
             Toast.makeText(getContext(), "Please Enter Email and Password", Toast.LENGTH_SHORT).show();
         }
-        else {*/
-            UsuarioDataSource userds = new UsuarioDataSource(getContext());
-            Usuario user = userds.login(email, password);
+        else {
+            peticionLogin(email,password);
+        }
+    }
 
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(MainRecyclerTab.USER_ID_KEY, user.getId());
-            editor.apply();
+    private void peticionLogin(String email, String password){
+        Call<Usuario> call = ApiUtil.getKukosApi().login(new LoginBody(email, password));
 
-            goToParent();
-        //}
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                switch (response.code()){
+                    case 200:
+                        Usuario user = response.body(); //Cogemos el usuario
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit(); //Guardamos el usuario en sesion
+                        editor.putString(MainRecyclerTab.USER_ID_KEY, user.getId());
+                        editor.apply();
+
+                        MainRecyclerTab.usuarioEnSesion=user;
+
+                        goToParent();
+                        break;
+                    case 404:
+                        Toast.makeText(getContext(), "Incorrect email or password", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        call.cancel();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.e("Login - error", t.toString());
+            }
+        });
     }
 
     private void goToParent() {

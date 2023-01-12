@@ -76,10 +76,10 @@ public class RegistroFragment extends Fragment {
             public void onClick(View view) {
                 if (checkFields(editTextNombre, editTextApellidos, editTextNickname, editTextEmail, editTextPassword, editTextRepeatPassword)){
                     UsuarioDataSource userds = new UsuarioDataSource(getContext());
-                    Usuario user = userds.registrar(editTextNombre, editTextApellidos, editTextNickname, editTextEmail, editTextPassword);
+                    //Usuario user = userds.registrar(editTextNombre, editTextApellidos, editTextNickname, editTextEmail, editTextPassword);
 
                     SharedPreferences.Editor editor = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE).edit();
-                    editor.putInt(MainRecyclerTab.USER_ID_KEY, user.getId());
+                    //editor.putInt(MainRecyclerTab.USER_ID_KEY, user.getId());
                     editor.apply();
                     ProfileFragment profileFragment = new ProfileFragment();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, profileFragment).commit();

@@ -1,9 +1,13 @@
 package com.example.kukoslokos.util;
 
 import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.kukoslokos.datos.PeliculasDataSource;
 import com.example.kukoslokos.model.Pelicula;
+import com.example.kukoslokos.model.Usuario;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +67,19 @@ public class Service {
         }
     }
 
+    public static Usuario getUserById(String id){
+        Usuario usuario = new Usuario();
+        try {
+            String path = "https://kukos-server.vercel.app/getUserById?_id="+id;
+            JSONObject jsonObject = getRequestJSONObject(path);
+            usuario = convertToUsuario(jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            return usuario;
+        }
+    }
+
     public static Pelicula getPeliById(int id){
         Pelicula pelicula = new Pelicula();
         try {
@@ -83,6 +100,21 @@ public class Service {
             peliculas.add(convertToPelicula(jsonObject));
         }
         return peliculas;
+    }
+
+    private static Usuario convertToUsuario(JSONObject jsonObject) throws JSONException {
+        String id = jsonObject.getString("_id");
+        String nombre = jsonObject.getString("nombre");
+        String email = jsonObject.getString("email");
+        String password = jsonObject.getString("password");
+        JSONArray moviesSavedJsonArray = jsonObject.getJSONArray("moviesSaved");
+        List<Integer> moviesSaved = new ArrayList<>();
+        for (int i = 0; i < moviesSavedJsonArray.length(); i++) {
+            moviesSaved.add(moviesSavedJsonArray.getInt(i));
+        }
+        int points = jsonObject.getInt("points");
+        double lastRule = jsonObject.getDouble("lastRule");
+        return new Usuario(id, nombre, email, password, points, moviesSaved, lastRule);
     }
 
     private static Pelicula convertToPelicula(JSONObject jsonObject) throws JSONException {

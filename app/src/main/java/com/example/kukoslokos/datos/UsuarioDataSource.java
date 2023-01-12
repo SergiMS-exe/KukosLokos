@@ -47,7 +47,7 @@ public class UsuarioDataSource {
         return insertId;
     }
 
-    public Usuario login(String email, String password){
+    /**public Usuario login(String email, String password){
         open();
         Usuario user = new Usuario();
 
@@ -114,5 +114,5 @@ public class UsuarioDataSource {
 
         close();
         return usuario;
-    }
+    }*/
 }
