@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,15 @@ import androidx.fragment.app.Fragment;
 
 import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
+import com.example.kukoslokos.model.Usuario;
+import com.example.kukoslokos.util.ApiUtil;
+import com.example.kukoslokos.util.bodies.UpdateProfilePhoto;
 
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +37,8 @@ import java.util.Random;
 public class ProfileFragment extends Fragment {
 
     boolean modoNoche;
-
+    public static final String USER_ID_KEY = "user_id_key";
+    SharedPreferences sharedPreferences;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -71,6 +80,7 @@ public class ProfileFragment extends Fragment {
         ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
         ImageView imgCambio = (ImageView) getView().findViewById(R.id.imageCambio);
         ImageView imgMarco = (ImageView) getView().findViewById(R.id.imageMarcoNivel);
+        ImageView imgPerfil = (ImageView) getView().findViewById(R.id.imagenPerfil);
 
         if (sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "") == "") {
             LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.PROFILE);
@@ -92,6 +102,15 @@ public class ProfileFragment extends Fragment {
             int[] marcos = {R.drawable.ic_lvl_0, R.drawable.ic_lvl_10,R.drawable.ic_lvl_20,
                     R.drawable.ic_lvl_30, R.drawable.ic_lvl_40, R.drawable.ic_lvl_50};
 
+            int[] avatares = {R.drawable.ic_avatar_0, R.drawable.ic_avatar_1,
+                    R.drawable.ic_avatar_2, R.drawable.ic_avatar_3, R.drawable.ic_avatar_4,
+                    R.drawable.ic_avatar_5, R.drawable.ic_avatar_6, R.drawable.ic_avatar_7,
+                    R.drawable.ic_avatar_8, R.drawable.ic_avatar_9, R.drawable.ic_avatar_10,
+                    R.drawable.ic_avatar_11, R.drawable.ic_avatar_12, R.drawable.ic_avatar_13,
+                    R.drawable.ic_avatar_14, R.drawable.ic_avatar_15, R.drawable.ic_avatar_16,
+                    R.drawable.ic_avatar_17, R.drawable.ic_avatar_18, R.drawable.ic_avatar_19};
+
+            imgPerfil.setImageResource(avatares[MainRecyclerTab.usuarioEnSesion.getProfilePhoto()]);
             imgMarco.setImageResource(marcos[nivel/10]);
         }
 
@@ -171,6 +190,9 @@ public class ProfileFragment extends Fragment {
         imgCambio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 int[] avatarIds = {R.drawable.ic_avatar_0, R.drawable.ic_avatar_1,
                         R.drawable.ic_avatar_2, R.drawable.ic_avatar_3, R.drawable.ic_avatar_4,
                         R.drawable.ic_avatar_5, R.drawable.ic_avatar_6, R.drawable.ic_avatar_7,
@@ -183,6 +205,30 @@ public class ProfileFragment extends Fragment {
                 int randomIndex = random.nextInt(avatarIds.length);
 
                 imgPerfil.setImageResource(avatarIds[randomIndex]);
+                peticionUpdateProfilePhoto(randomIndex);
+            }
+        });
+    }
+
+    private void peticionUpdateProfilePhoto(int numberPhoto) {
+        sharedPreferences = getActivity().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
+        Call<Usuario> call = ApiUtil.getKukosApi().updateProfilePhoto(new UpdateProfilePhoto(sharedPreferences.getString(USER_ID_KEY, ""), numberPhoto));
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                switch (response.code()){
+                    case 200:
+                        MainRecyclerTab.usuarioEnSesion=response.body();
+                        break;
+                    default:
+                        call.cancel();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.e("Lista - error", t.toString());
             }
         });
     }

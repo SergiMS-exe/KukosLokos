@@ -15,6 +15,7 @@ public class Usuario {
     String nickName;
     @SerializedName("points")
     int puntos;
+    int profilePhoto;
     List<Integer> moviesSaved;
     double lastRule;
 
@@ -27,6 +28,7 @@ public class Usuario {
         this.nickName = nickName;
         this.moviesSaved = moviesSaved;
         this.lastRule = lastRule;
+        this.profilePhoto = 0;
     }
 
     public double getLastRule() {
@@ -43,6 +45,14 @@ public class Usuario {
 
     public void setPuntos(int puntos) {
         this.puntos = puntos;
+    }
+
+    public int getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(int profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public List<Integer> getMoviesSaved() {
