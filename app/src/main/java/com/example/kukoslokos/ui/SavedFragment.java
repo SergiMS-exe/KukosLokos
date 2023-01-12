@@ -54,7 +54,6 @@ public class SavedFragment extends Fragment {
      *
      * @return A new instance of fragment SavedFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static SavedFragment newInstance(List<Pelicula> listaPeliculas) {
         SavedFragment fragment = new SavedFragment();
         fragment.setListaPeliculas(listaPeliculas);

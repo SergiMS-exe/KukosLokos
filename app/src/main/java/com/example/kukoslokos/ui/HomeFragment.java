@@ -22,7 +22,12 @@ import com.example.kukoslokos.R;
 import com.example.kukoslokos.SectionAdapter;
 import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.model.Seccion;
+import com.example.kukoslokos.tasks.GetGeneros;
 import com.example.kukoslokos.tasks.GetPelis;
+import com.example.kukoslokos.tasks.GetPelisByCategory;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +42,10 @@ import java.util.concurrent.ExecutionException;
  */
 public class HomeFragment extends Fragment {
 
+    static final Map<String, String> SECCIONES = Map.of("Novedades", "now_playing",
+            "Populares","popular", "Tendencias","top_rated",
+            "Proximamente", "upcoming");
 
-    static final Map<String, String> SECCIONES = Map.of("Novedades", "now_playing", "Populares","popular", "Tendencias","top_rated", "Proximamente", "upcoming");
     List<Seccion> seccionList;
 
     public HomeFragment() {
@@ -53,11 +60,11 @@ public class HomeFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment HomeFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -83,9 +90,10 @@ public class HomeFragment extends Fragment {
     //Cargar secciones
     private void cargarSecciones() {
         HashMap<String, List<Pelicula>> peliculasEnSecciones = new HashMap<String, List<Pelicula>>();
-        for (String key: SECCIONES.keySet()){
-            peliculasEnSecciones.put(key, cargarPeliculas(SECCIONES.get(key)));
-        }
+
+            for (String key: SECCIONES.keySet()){
+                peliculasEnSecciones.put(key, cargarPeliculas(SECCIONES.get(key)));
+            }
         //Creamos batida de secciones estaticas
         seccionList = createSections(peliculasEnSecciones);
         //obterner linearlayout
@@ -120,10 +128,34 @@ public class HomeFragment extends Fragment {
     }
 
     private List<Pelicula> cargarPeliculas(String categoria) {
+        List<Pelicula> peliculasPop = new ArrayList<Pelicula>();
+        GetPelis populares = new GetPelis(categoria);
+        GetGeneros cargarGeneros = new GetGeneros();
         try {
-            GetPelis populares = new GetPelis(categoria);
+            // está puesto "Todos los generos", esto
+            // si no cargamos
+            if(MainRecyclerTab.selectedItem == 0) {
+                populares.execute();
+                return populares.get();
+            }else {
+            // Filtrar por el genero seleccionado
+                cargarGeneros.execute();
+                HashMap<String, Integer> GENEROS = cargarGeneros.get();
+
             populares.execute();
-            return populares.get();
+            peliculasPop = populares.get();
+            // Mirar la categoria filtada en el menú
+                String generoActual = MainRecyclerTab.generosMain[MainRecyclerTab.selectedItem];
+            // Buscar el valor en GENEROS
+                int gerenoActual_id = GENEROS.get(generoActual);
+            // Llamar a GetPelisByCategory pasarle la categoria a filtrar (con la lista de pelis)
+                GetPelisByCategory pelisConGenero = new GetPelisByCategory(gerenoActual_id, peliculasPop);
+                pelisConGenero.execute();
+                List<Pelicula> wiwi = pelisConGenero.get();
+                // Devolver la lista de peliculas filtradas
+                return pelisConGenero.get();
+            }
+            //return peliculasPop;
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

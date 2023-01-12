@@ -1,9 +1,6 @@
 package com.example.kukoslokos.util;
 
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import com.example.kukoslokos.datos.PeliculasDataSource;
 import com.example.kukoslokos.model.Pelicula;
@@ -18,12 +15,25 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Service {
 
     static final String API_KEY="12bb2b69299bc5534ff3f0ef888cb2c7";
     static final String URL_BASE = "https://api.themoviedb.org/3";
+
+    static String jsonString = "{\"genres\":[{\"id\":28,\"name\":\"Acción\"}," +
+            "{\"id\":12,\"name\":\"Aventura\"},{\"id\":16,\"name\":\"Animación\"}," +
+            "{\"id\":35,\"name\":\"Comedia\"},{\"id\":80,\"name\":\"Crimen\"}," +
+            "{\"id\":99,\"name\":\"Documental\"},{\"id\":18,\"name\":\"Drama\"}," +
+            "{\"id\":10751,\"name\":\"Familia\"},{\"id\":14,\"name\":\"Fantasía\"}," +
+            "{\"id\":36,\"name\":\"Historia\"},{\"id\":27,\"name\":\"Terror\"}," +
+            "{\"id\":10402,\"name\":\"Música\"},{\"id\":9648,\"name\":\"Misterio\"}," +
+            "{\"id\":10749,\"name\":\"Romance\"},{\"id\":878,\"name\":\"Ciencia ficción\"}," +
+            "{\"id\":10770,\"name\":\"Película de TV\"},{\"id\":53,\"name\":\"Suspense\"}," +
+            "{\"id\":10752,\"name\":\"Bélica\"},{\"id\":37,\"name\":\"Western\"}]}";
+
 
     private static JSONObject getRequestJSONObject(String path){
         JSONObject jsonObject = null;
@@ -67,10 +77,10 @@ public class Service {
         }
     }
 
-    public static Usuario getUserById(String id){
+    public static Usuario getUserById(String id) {
         Usuario usuario = new Usuario();
         try {
-            String path = "https://kukos-server.vercel.app/getUserById?_id="+id;
+            String path = "https://kukos-server.vercel.app/getUserById?_id=" + id;
             JSONObject jsonObject = getRequestJSONObject(path);
             usuario = convertToUsuario(jsonObject);
         } catch (JSONException e) {
@@ -78,6 +88,37 @@ public class Service {
         } finally {
             return usuario;
         }
+    }
+    /**
+     * Devuelve una lista de las peliculas filtradas por categoria
+     * @param genero_id
+     * @param peliculasAFiltrar
+     * @return
+     */
+    public static List<Pelicula> getMoviesByGenero(int genero_id, List<Pelicula> peliculasAFiltrar) {
+        List<Pelicula> filteredMovies = new ArrayList<>();
+        for (Pelicula pelicula : peliculasAFiltrar) {
+            if (isInCategory(pelicula.getGeneros(), genero_id)) {
+                filteredMovies.add(pelicula);
+            }
+        }
+        return filteredMovies;
+    }
+
+    /**
+     * Método que devuelve true si conincide con la categoría filtrada
+     * false en caso contrario
+     * @param generos
+     * @param genero_id
+     * @return true si coincide con la categoria
+     */
+    private static boolean isInCategory(int[] generos, int genero_id) {
+        for (int i = 0; i < generos.length; i++) {
+            if(generos[i] == genero_id){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Pelicula getPeliById(int id){
@@ -107,6 +148,7 @@ public class Service {
         String nombre = jsonObject.getString("nombre");
         String email = jsonObject.getString("email");
         String password = jsonObject.getString("password");
+        String nickName = jsonObject.getString("nickName");
         JSONArray moviesSavedJsonArray = jsonObject.getJSONArray("moviesSaved");
         List<Integer> moviesSaved = new ArrayList<>();
         for (int i = 0; i < moviesSavedJsonArray.length(); i++) {
@@ -114,7 +156,7 @@ public class Service {
         }
         int points = jsonObject.getInt("points");
         double lastRule = jsonObject.getDouble("lastRule");
-        return new Usuario(id, nombre, email, password, points, moviesSaved, lastRule);
+        return new Usuario(id, nombre, nickName, email, password, points, moviesSaved, lastRule);
     }
 
     private static Pelicula convertToPelicula(JSONObject jsonObject) throws JSONException {
@@ -123,18 +165,20 @@ public class Service {
         String argumento = jsonObject.getString("overview");
         String pathPoster = jsonObject.getString("poster_path");
         String pathBackdrop = jsonObject.getString("backdrop_path");
-        List<String> generos = new ArrayList<String>();//getCategorias((int[])jsonObject.get("genre_ids"));
 
-        return new Pelicula(id, titulo, argumento, pathPoster, pathBackdrop, generos);
-    }
-
-    private static List<String> getCategorias(int[] categoriasIds) {
-        //TODO Hacer esto funcional
-        List<String> categorias = new ArrayList<String>();
-        for (int i = 0; i < categoriasIds.length; i++) {
-
+        JSONArray generos_id_conv;
+        try {
+            generos_id_conv = jsonObject.getJSONArray("genre_ids");
+        }catch(Exception e){
+            generos_id_conv = jsonObject.getJSONArray("genres");
         }
-        return null;
+        int[] generos_id = new int[generos_id_conv.length()];
+
+        for (int i = 0; i < generos_id_conv.length(); i++){
+            generos_id[i] = generos_id_conv.optInt(i);
+        }
+
+        return new Pelicula(id, titulo, argumento, pathPoster, pathBackdrop, generos_id);
     }
 
     public static void guardarPeli(int idUser, int idPeli, Context context) {
@@ -159,5 +203,20 @@ public class Service {
     public static void eliminarGuardada(int idUser, int idPeli, Context context) {
         PeliculasDataSource peliculasDataSource = new PeliculasDataSource(context);
         peliculasDataSource.eliminarFavPeli(idPeli, idUser);
+    }
+
+    public static HashMap<String, Integer> getGenerosTotales() throws JSONException {
+        HashMap<String, Integer> genreMap = new HashMap<>();
+
+        JSONObject json = new JSONObject(jsonString);
+        JSONArray genres = json.getJSONArray("genres");
+
+        for (int i = 0; i < genres.length(); i++) {
+            JSONObject genre = genres.getJSONObject(i);
+            String name = genre.getString("name");
+            int id = genre.getInt("id");
+            genreMap.put(name, id);
+        }
+        return genreMap;
     }
 }

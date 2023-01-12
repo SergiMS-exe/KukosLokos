@@ -7,10 +7,10 @@ public class Serie {
     String titulo;
     String argumento;
     String pathPoster;
-    List<String> generos;
+    int[] generos;
     List<Temporada> temporadas;
 
-    public Serie(int id, String titulo, String argumento, String pathPoster, List<String> generos, List<Temporada> temporadas) {
+    public Serie(int id, String titulo, String argumento, String pathPoster, int[] generos, List<Temporada> temporadas) {
         this.id=id;
         this.titulo = titulo;
         this.argumento = argumento;
@@ -35,7 +35,7 @@ public class Serie {
         return pathPoster;
     }
 
-    public List<String> getGeneros() {
+    public int[] getGeneros() {
         return generos;
     }
 

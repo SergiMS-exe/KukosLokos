@@ -29,11 +29,9 @@ public class LoginFragment extends Fragment {
     public static final String SAVED = "saved";
     public static final String PROFILE = "profile";
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String PARENT = "parent";
 
-    // TODO: Rename and change types of parameters
     private String parent;
 
     private SharedPreferences sharedPreferences;
@@ -49,7 +47,6 @@ public class LoginFragment extends Fragment {
      *
      * @return A new instance of fragment ProfileFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static LoginFragment newInstance(String parent) {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
