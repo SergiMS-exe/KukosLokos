@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +18,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kukoslokos.model.Pelicula;
+import com.example.kukoslokos.model.Usuario;
 import com.example.kukoslokos.tasks.GetPeliById;
 import com.example.kukoslokos.tasks.GetPeliculasGuardadas;
 import com.example.kukoslokos.tasks.GuardarPeli;
+import com.example.kukoslokos.util.ApiUtil;
+import com.example.kukoslokos.util.bodies.SaveMovieBody;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailsContent extends AppCompatActivity {
 
@@ -62,36 +70,32 @@ public class DetailsContent extends AppCompatActivity {
 
 
             SharedPreferences sharedPreferences = getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
-            int userId = sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1);
-            int accion= GuardarPeli.NOT_WORKING;
+            String userId = sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "");
+
             String textButton = "Guardar";
-            if (userId!=-1) {//Comprobamos si el usuario esta registrado
+            if (!sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "").equals("")) {//Comprobamos si el usuario esta registrado
                 btnGuardar.setVisibility(View.VISIBLE);
 
-                GetPeliculasGuardadas peliculasGuardadas = new GetPeliculasGuardadas(userId, getApplicationContext());
-                peliculasGuardadas.execute();
-                List<Pelicula> peliculaList = peliculasGuardadas.get();
-                if (peliculaList.contains(pelicula)){ //Comprobamos si el usuario ya ha guardado la pelicula
+                if (MainRecyclerTab.usuarioEnSesion.getMoviesSaved().contains(pelicula.getId())) //Comprobamos si el usuario ya ha guardado la pelicula
                     btnGuardar.setText("Eliminar guardado");
-                    accion=GuardarPeli.ELMINIAR_GUARDADA;
-                } else {
-                    accion = GuardarPeli.GUARDAR;
-                    textButton="Eliminar guardado";
-                }
+                else
+                    btnGuardar.setText("Guardar");
             }
 
-            int finalAccion = accion;
+
             String finalTextButton = textButton;
             btnGuardar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    GuardarPeli guardarPelicula = new GuardarPeli(userId, pelicula.getId(), getApplicationContext(), finalAccion);
-                    guardarPelicula.execute();
+                    peticionGuardarPeli(userId, idPeli);
 
                     Animation animationGuardar = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
                     btnGuardar.setAnimation(animationGuardar);
+                    if (btnGuardar.getText().equals("Guardar"))
+                        btnGuardar.setText("Eliminar guardado");
+                    else if (btnGuardar.getText().equals("Eliminar guardado"))
+                        btnGuardar.setText("Guardar");
 
-                    btnGuardar.setText(finalTextButton);
                 }
             });
 
@@ -119,6 +123,28 @@ public class DetailsContent extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void peticionGuardarPeli(String idUser, int idMovie) {
+        Call<Usuario> call = ApiUtil.getKukosApi().saveMovie(new SaveMovieBody(idUser, idMovie));
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                switch (response.code()){
+                    case 200:
+                        MainRecyclerTab.usuarioEnSesion= response.body();
+                        break;
+                    default:
+                        call.cancel();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.e("Login - error", t.toString());
+            }
+        });
     }
 
     @Override
