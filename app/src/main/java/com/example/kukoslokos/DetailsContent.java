@@ -153,6 +153,8 @@ public class DetailsContent extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_up, menu);
 
         menu.findItem(R.id.search).setVisible(false);
+        menu.findItem(R.id.filter).setVisible(false);
+
 
         return super.onCreateOptionsMenu(menu);
     }

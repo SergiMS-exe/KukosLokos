@@ -60,7 +60,6 @@ public class HomeFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment HomeFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -133,7 +132,7 @@ public class HomeFragment extends Fragment {
         GetPelis populares = new GetPelis(categoria);
         GetGeneros cargarGeneros = new GetGeneros();
         try {
-            //TODO: Si está puesto "Todos los generos", esto
+            // está puesto "Todos los generos", esto
             // si no cargamos
             if(MainRecyclerTab.selectedItem == 0) {
                 populares.execute();
@@ -145,7 +144,6 @@ public class HomeFragment extends Fragment {
 
             populares.execute();
             peliculasPop = populares.get();
-            //TODO:
             // Mirar la categoria filtada en el menú
                 String generoActual = MainRecyclerTab.generosMain[MainRecyclerTab.selectedItem];
             // Buscar el valor en GENEROS

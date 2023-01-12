@@ -30,7 +30,6 @@ public class RegistroFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment ProfileFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static RegistroFragment newInstance(String param1, String param2) {
         RegistroFragment fragment = new RegistroFragment();
         Bundle args = new Bundle();

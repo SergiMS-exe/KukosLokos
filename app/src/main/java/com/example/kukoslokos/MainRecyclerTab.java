@@ -166,7 +166,6 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
                         HomeFragment homeFragment = new HomeFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, homeFragment).commit();
                         getSupportActionBar().show();
-
                     return true;
 
                 case R.id.saved:
@@ -369,6 +368,10 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                HomeFragment homeFragment = new HomeFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, homeFragment).commit();
+                getSupportActionBar().show();
+
                 Toast.makeText(MainRecyclerTab.this, "Has seleccionado: " + generosMain[selectedItem], Toast.LENGTH_SHORT).show();
             }
         });
