@@ -22,7 +22,11 @@ import com.example.kukoslokos.R;
 import com.example.kukoslokos.SectionAdapter;
 import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.model.Seccion;
+import com.example.kukoslokos.tasks.GetGeneros;
 import com.example.kukoslokos.tasks.GetPelis;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +41,12 @@ import java.util.concurrent.ExecutionException;
  */
 public class HomeFragment extends Fragment {
 
+    static final Map<String, String> SECCIONES = Map.of("Novedades", "now_playing",
+            "Populares","popular", "Tendencias","top_rated",
+            "Proximamente", "upcoming");
 
-    static final Map<String, String> SECCIONES = Map.of("Novedades", "now_playing", "Populares","popular", "Tendencias","top_rated", "Proximamente", "upcoming");
+    GetGeneros cargarGeneros = new GetGeneros();
+    HashMap<String, Integer> GENEROS;
     List<Seccion> seccionList;
 
     public HomeFragment() {
@@ -83,9 +91,10 @@ public class HomeFragment extends Fragment {
     //Cargar secciones
     private void cargarSecciones() {
         HashMap<String, List<Pelicula>> peliculasEnSecciones = new HashMap<String, List<Pelicula>>();
-        for (String key: SECCIONES.keySet()){
-            peliculasEnSecciones.put(key, cargarPeliculas(SECCIONES.get(key)));
-        }
+
+            for (String key: SECCIONES.keySet()){
+                peliculasEnSecciones.put(key, cargarPeliculas(SECCIONES.get(key)));
+            }
         //Creamos batida de secciones estaticas
         seccionList = createSections(peliculasEnSecciones);
         //obterner linearlayout
@@ -120,10 +129,21 @@ public class HomeFragment extends Fragment {
     }
 
     private List<Pelicula> cargarPeliculas(String categoria) {
+        List<Pelicula> peliculasPop = new ArrayList<Pelicula>();
         try {
-            GetPelis populares = new GetPelis(categoria);
-            populares.execute();
-            return populares.get();
+            //TODO: Si está puesto "Todos los generos", esto
+            // si no cargamos
+            if(true) {
+                GetPelis populares = new GetPelis(categoria);
+                populares.execute();
+                peliculasPop = populares.get();
+            }else {
+            // Filtrar por el genero seleccionado
+            cargarGeneros.execute();
+            GENEROS = cargarGeneros.get();
+
+            }
+            return peliculasPop;
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
