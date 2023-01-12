@@ -12,17 +12,19 @@ public class Usuario {
     String apellidos;
     String email;
     String password;
+    String nickName;
     @SerializedName("points")
     int puntos;
     List<Integer> moviesSaved;
     double lastRule;
 
-    public Usuario(String id, String nombre, String email, String password, int puntos, List<Integer> moviesSaved, double lastRule) {
+    public Usuario(String id, String nombre, String nickName, String email, String password, int puntos, List<Integer> moviesSaved, double lastRule) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.puntos = puntos;
+        this.nickName = nickName;
         this.moviesSaved = moviesSaved;
         this.lastRule = lastRule;
     }
@@ -52,6 +54,14 @@ public class Usuario {
     }
 
     public Usuario(){}
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public String getId() {
         return id;

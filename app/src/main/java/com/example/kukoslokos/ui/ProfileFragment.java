@@ -67,22 +67,37 @@ public class ProfileFragment extends Fragment {
         super.onStart();
 
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
-        TextView txtCorreo = null;
-        if (sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "") == "") {
-            LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.PROFILE);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
-        } else {
-            txtCorreo = (TextView) getView().findViewById(R.id.textEmail);
-            txtCorreo.setText(MainRecyclerTab.usuarioEnSesion.getEmail());
-        }
 
+        TextView txtCorreo, txtNivel, txtPuntos, txtNickName  = null;
         ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
         ImageView imgCambio = (ImageView) getView().findViewById(R.id.imageCambio);
         ImageView imgMarco = (ImageView) getView().findViewById(R.id.imageMarcoNivel);
 
-        TextView txtNivel = (TextView) getView().findViewById(R.id.textNivel);
-        TextView txtPuntos = (TextView) getView().findViewById(R.id.textPuntos);
-        TextView txtNickName = (TextView) getView().findViewById(R.id.textNickname);
+        if (sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "") == "") {
+            LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.PROFILE);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
+        } else {
+            txtNivel = (TextView) getView().findViewById(R.id.textNivel);
+            txtPuntos = (TextView) getView().findViewById(R.id.textPuntos);
+            txtNickName = (TextView) getView().findViewById(R.id.textNickname);
+
+            txtCorreo = (TextView) getView().findViewById(R.id.textEmail);
+            txtCorreo.setText(MainRecyclerTab.usuarioEnSesion.getEmail());
+
+            int nivel = MainRecyclerTab.usuarioEnSesion.getPuntos() / 200;
+            int puntosRestantes = MainRecyclerTab.usuarioEnSesion.getPuntos() % 200;
+            txtNickName.setText(MainRecyclerTab.usuarioEnSesion.getNickName());
+            txtNivel.setText("" + nivel);
+            txtPuntos.setText(puntosRestantes + "/200");
+
+            int[] marcos = {R.drawable.ic_lvl_0, R.drawable.ic_lvl_10,R.drawable.ic_lvl_20,
+                    R.drawable.ic_lvl_30, R.drawable.ic_lvl_40, R.drawable.ic_lvl_50};
+
+            imgMarco.setImageResource(marcos[nivel/10]);
+        }
+
+
+
 
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
@@ -98,16 +113,7 @@ public class ProfileFragment extends Fragment {
                 imgCambio.setImageResource(R.drawable.ic_cambio_moon);
                 break;
         }
-        int nivel = MainRecyclerTab.usuarioEnSesion.getPuntos() / 200;
-        int puntosRestantes = MainRecyclerTab.usuarioEnSesion.getPuntos() % 200;
-        //txtNickName.setText(MainRecyclerTab.usuarioEnSesion.getNickname());
-        txtNivel.setText("" + nivel);
-        txtPuntos.setText(puntosRestantes + "/200");
 
-        int[] marcos = {R.drawable.ic_lvl_0, R.drawable.ic_lvl_10,R.drawable.ic_lvl_20,
-                R.drawable.ic_lvl_30, R.drawable.ic_lvl_40, R.drawable.ic_lvl_50};
-
-        imgMarco.setImageResource(marcos[nivel/10]);
 
     }
 
