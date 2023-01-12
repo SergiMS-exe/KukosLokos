@@ -1,6 +1,7 @@
 package com.example.kukoslokos.ui;
 
 import static com.example.kukoslokos.MainRecyclerTab.PELICULA_SELECCIONADA;
+import static com.example.kukoslokos.MainRecyclerTab.usuarioEnSesion;
 
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -22,8 +23,11 @@ import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.PeliculasAdapter;
 import com.example.kukoslokos.R;
 import com.example.kukoslokos.model.Pelicula;
+import com.example.kukoslokos.tasks.GetPeliById;
 import com.example.kukoslokos.tasks.GetPeliculasGuardadas;
+import com.example.kukoslokos.util.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -85,26 +89,31 @@ public class SavedFragment extends Fragment {
         }
 
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
-        int userId = sharedPreferences.getInt(MainRecyclerTab.USER_ID_KEY, -1);
+        String userId = sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "");
 
-        if (userId==-1){
+        if (userId.equals("")){
             LoginFragment loginFragment = LoginFragment.newInstance(LoginFragment.SAVED);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, loginFragment).commit();
             return;
         }
 
+        List<Pelicula> pelisFavs = new ArrayList<>();
         try {
-            GetPeliculasGuardadas peliculasGuardadas = new GetPeliculasGuardadas(userId, getContext());
-            List<Pelicula> pelisFavs = peliculasGuardadas.execute().get();
 
-            titleSaved.setText("Peliculas guardadas");
-            titleSaved.setTextSize(30);
-            showPeliculas(pelisFavs);
+            for (Integer peliId : usuarioEnSesion.getMoviesSaved()){
+                GetPeliById peliById = new GetPeliById(peliId);
+                peliById.execute();
+                pelisFavs.add(peliById.get());
+            }
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        titleSaved.setText("Peliculas guardadas");
+        titleSaved.setTextSize(30);
+        showPeliculas(pelisFavs);
+
     }
 
     private void showPeliculas(List<Pelicula> pelis) {
