@@ -1,9 +1,6 @@
 package com.example.kukoslokos.util;
 
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import com.example.kukoslokos.datos.PeliculasDataSource;
 import com.example.kukoslokos.model.Pelicula;
@@ -151,6 +148,7 @@ public class Service {
         String nombre = jsonObject.getString("nombre");
         String email = jsonObject.getString("email");
         String password = jsonObject.getString("password");
+        String nickName = jsonObject.getString("nickName");
         JSONArray moviesSavedJsonArray = jsonObject.getJSONArray("moviesSaved");
         List<Integer> moviesSaved = new ArrayList<>();
         for (int i = 0; i < moviesSavedJsonArray.length(); i++) {
@@ -158,7 +156,7 @@ public class Service {
         }
         int points = jsonObject.getInt("points");
         double lastRule = jsonObject.getDouble("lastRule");
-        return new Usuario(id, nombre, email, password, points, moviesSaved, lastRule);
+        return new Usuario(id, nombre, nickName, email, password, points, moviesSaved, lastRule);
     }
 
     private static Pelicula convertToPelicula(JSONObject jsonObject) throws JSONException {
