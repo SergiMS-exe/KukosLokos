@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
@@ -20,6 +21,8 @@ import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
 import com.example.kukoslokos.datos.UsuarioDataSource;
 import com.example.kukoslokos.model.Usuario;
+
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,16 +82,19 @@ public class ProfileFragment extends Fragment {
         }
 
         ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
+        ImageView imgCambio = (ImageView) getView().findViewById(R.id.imageCambio);
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
         switch (currentNightMode) {
             case Configuration.UI_MODE_NIGHT_NO:
                 // Tema claro,
                 imgBoton.setImageResource(R.drawable.ic_sun);
+                imgCambio.setImageResource(R.drawable.ic_cambio_sun);
                 break;
             case Configuration.UI_MODE_NIGHT_YES:
                 // Tema oscuro
                 imgBoton.setImageResource(R.drawable.ic_moon);
+                imgCambio.setImageResource(R.drawable.ic_cambio_moon);
                 break;
         }
     }
@@ -98,6 +104,9 @@ public class ProfileFragment extends Fragment {
         super.onResume();
 
         Button btnLogout = (Button) getView().findViewById(R.id.btn_cerrar_sesion);
+        ImageView imgPerfil = (ImageView) getView().findViewById(R.id.imagenPerfil);
+        ImageView imgCambio = (ImageView) getView().findViewById(R.id.imageCambio);
+        ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +120,7 @@ public class ProfileFragment extends Fragment {
                 onStart();
             }
         });
-        ImageView imgBoton = (ImageView) getView().findViewById(R.id.imageTema);
+
         imgBoton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,14 +133,35 @@ public class ProfileFragment extends Fragment {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                         modoNoche = true;
                         imgBoton.setImageResource(R.drawable.ic_moon);
+                        imgCambio.setImageResource(R.drawable.ic_cambio_moon);
                         break;
                     case Configuration.UI_MODE_NIGHT_YES:
                         // Tema oscuro, cambio a claro
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                         modoNoche = false;
                         imgBoton.setImageResource(R.drawable.ic_sun);
+                        imgCambio.setImageResource(R.drawable.ic_cambio_sun);
                         break;
                 }
+            }
+        });
+
+
+        imgCambio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int[] avatarIds = {R.drawable.ic_avatar_0, R.drawable.ic_avatar_1,
+                        R.drawable.ic_avatar_2, R.drawable.ic_avatar_3, R.drawable.ic_avatar_4,
+                        R.drawable.ic_avatar_5, R.drawable.ic_avatar_6, R.drawable.ic_avatar_7,
+                        R.drawable.ic_avatar_8, R.drawable.ic_avatar_9, R.drawable.ic_avatar_10,
+                        R.drawable.ic_avatar_11, R.drawable.ic_avatar_12, R.drawable.ic_avatar_13,
+                        R.drawable.ic_avatar_4, R.drawable.ic_avatar_15, R.drawable.ic_avatar_16,
+                        R.drawable.ic_avatar_17, R.drawable.ic_avatar_18, R.drawable.ic_avatar_19 };
+
+                Random random = new Random();
+                int randomIndex = random.nextInt(avatarIds.length);
+
+                imgPerfil.setImageResource(avatarIds[randomIndex]);
             }
         });
     }

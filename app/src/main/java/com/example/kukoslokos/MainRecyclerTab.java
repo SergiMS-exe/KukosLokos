@@ -1,12 +1,5 @@
 package com.example.kukoslokos;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
-import androidx.annotation.NonNull;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,12 +13,14 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.tasks.SearchPelis;
 import com.example.kukoslokos.ui.HomeFragment;
-import com.example.kukoslokos.ui.LoginFragment;
 import com.example.kukoslokos.ui.ProfileFragment;
 import com.example.kukoslokos.ui.SavedFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -61,7 +56,6 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
         super.onCreate(savedInstanceState);
 
         cargadoRuleta();
-
 
     }
 

@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="320dp"
             android:text="Correo electrónico:"
-            android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,10 +52,10 @@
 
         <ImageView
             android:id="@+id/imagenPerfil"
-            android:layout_width="165dp"
-            android:layout_height="211dp"
-            android:layout_marginTop="73dp"
-            android:src="@drawable/actor_sin_imagen"
+            android:layout_width="155dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="88dp"
+            android:src="@drawable/ic_avatar_0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -67,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="404dp"
             android:text="Nickname:"
-            android:textColor="#000000"
+
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,6 +82,17 @@
             android:scaleX="0.7"
             android:scaleY="0.7"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageCambio"
+            android:layout_width="51dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="204dp"
+            android:src="@drawable/ic_cambio_sun"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.661"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 

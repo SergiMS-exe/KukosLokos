@@ -7,14 +7,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.kukoslokos.model.Pelicula;
-import com.example.kukoslokos.model.Usuario;
-import com.example.kukoslokos.tasks.GetPeliById;
 import com.example.kukoslokos.util.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class PeliculasDataSource {
 
