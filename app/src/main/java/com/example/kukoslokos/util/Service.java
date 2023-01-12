@@ -80,7 +80,6 @@ public class Service {
         }
     }
 
-<<<<<<< Updated upstream
     public static Usuario getUserById(String id){
         Usuario usuario = new Usuario();
         try {
@@ -92,7 +91,7 @@ public class Service {
         } finally {
             return usuario;
         }
-=======
+
     /**
      * Devuelve una lista de las peliculas filtradas por categoria
      * @param genero_id
@@ -123,7 +122,6 @@ public class Service {
             }
         }
         return false;
->>>>>>> Stashed changes
     }
 
     public static Pelicula getPeliById(int id){
@@ -218,8 +216,6 @@ public class Service {
         PeliculasDataSource peliculasDataSource = new PeliculasDataSource(context);
         peliculasDataSource.eliminarFavPeli(idPeli, idUser);
     }
-<<<<<<< Updated upstream
-=======
 
     public static HashMap<String, Integer> getGenerosTotales() throws JSONException {
         HashMap<String, Integer> genreMap = new HashMap<>();
@@ -263,5 +259,4 @@ public class Service {
             return serie;
         }
     }*/
->>>>>>> Stashed changes
 }
