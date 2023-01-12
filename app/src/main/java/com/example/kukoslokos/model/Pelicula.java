@@ -14,11 +14,11 @@ public class Pelicula implements Parcelable {
     String pathPoster;
     String pathBackdrop;
 
-    List<String> generos;
+    int[] generos;
 
     public Pelicula(){}
 
-    public Pelicula(int id, String titulo, String argumento, String pathPoster, String pathBackdrop, List<String> generos) {
+    public Pelicula(int id, String titulo, String argumento, String pathPoster, String pathBackdrop, int[] generos) {
         this.id=id;
         this.titulo = titulo;
         this.argumento = argumento;
@@ -28,12 +28,12 @@ public class Pelicula implements Parcelable {
     }
 
     protected Pelicula(Parcel in){
-        id=in.readInt();
-        titulo=in.readString();
-        argumento=in.readString();
-        pathPoster=in.readString();
-        pathBackdrop=in.readString();
-        generos= in.readArrayList(String.class.getClassLoader());
+        id = in.readInt();
+        titulo = in.readString();
+        argumento = in.readString();
+        pathPoster = in.readString();
+        pathBackdrop = in.readString();
+        generos = in.createIntArray();
     }
 
     public int getId(){
@@ -56,7 +56,7 @@ public class Pelicula implements Parcelable {
         return pathBackdrop;
     }
 
-    public List<String> getGeneros() {
+    public int[] getGeneros() {
         return generos;
     }
 
@@ -72,7 +72,7 @@ public class Pelicula implements Parcelable {
         dest.writeString(argumento);
         dest.writeString(pathPoster);
         dest.writeString(pathBackdrop);
-        dest.writeStringList(generos);
+        dest.writeIntArray(generos);
     }
 
     public static final Creator<Pelicula> CREATOR = new Creator<Pelicula>() {
