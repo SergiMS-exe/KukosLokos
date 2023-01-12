@@ -3,10 +3,6 @@ package com.example.kukoslokos.ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.kukoslokos.MainRecyclerTab;
 import com.example.kukoslokos.R;
-import com.example.kukoslokos.datos.UsuarioDataSource;
 import com.example.kukoslokos.model.Usuario;
 import com.example.kukoslokos.util.ApiUtil;
 import com.example.kukoslokos.util.bodies.LoginBody;
@@ -82,7 +79,7 @@ public class LoginFragment extends Fragment {
         super.onResume();
 
         //Obtenemos los campos de texto del email y la password
-        EditText emailEditText = (EditText) getView().findViewById(R.id.emailAddress);
+        EditText userEditText = (EditText) getView().findViewById(R.id.usuario);
         EditText passwordEditText = (EditText) getView().findViewById(R.id.password);
         Button loginBtn = (Button) getView().findViewById(R.id.btn_iniciar_sesion);
 
@@ -90,8 +87,8 @@ public class LoginFragment extends Fragment {
         btnRegistro.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                RegistroFragment registroFragment = new RegistroFragment();
-                getParentFragmentManager().beginTransaction().replace(R.id.mainFragment, registroFragment).commit();
+                RegisterFragment registerFragment = new RegisterFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.mainFragment, registerFragment).commit();
             }
         });
 
@@ -103,23 +100,23 @@ public class LoginFragment extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login(emailEditText.getText().toString(), passwordEditText.getText().toString());
+                login(userEditText.getText().toString(), passwordEditText.getText().toString());
 
             }
         });
     }
 
-    private void login(String email, String password){
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+    private void login(String user, String password){
+        if (TextUtils.isEmpty(user) || TextUtils.isEmpty(password)){
             Toast.makeText(getContext(), "Please Enter Email and Password", Toast.LENGTH_SHORT).show();
         }
         else {
-            peticionLogin(email,password);
+            peticionLogin(user, password);
         }
     }
 
-    private void peticionLogin(String email, String password){
-        Call<Usuario> call = ApiUtil.getKukosApi().login(new LoginBody(email, password));
+    private void peticionLogin(String userName, String password){
+        Call<Usuario> call = ApiUtil.getKukosApi().login(new LoginBody(userName, password));
 
         call.enqueue(new Callback<Usuario>() {
             @Override
