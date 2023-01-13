@@ -98,11 +98,7 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
                 switch (response.code()){
                     case 200:
                         MainRecyclerTab.usuarioEnSesion=response.body();
-                        //Comprobamos si ya han pasado 24 horas desde la ultima ruleta
-                        long currentTimestamp = System.currentTimeMillis();
-                        long elapsedTime = currentTimestamp - (long) usuarioEnSesion.getLastRule();
-                        long oneDayInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-                        if (elapsedTime >= oneDayInMillis){
+                        if (checkRule()){
                             cargadoRuleta();
                         } else {
                             finRuleta=true;
@@ -120,6 +116,14 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
                 Log.e("Lista - error", t.toString());
             }
         });
+    }
+
+    private boolean checkRule() {
+        //Comprobamos si ya han pasado 24 horas desde la ultima ruleta
+        long currentTimestamp = System.currentTimeMillis();
+        long elapsedTime = currentTimestamp - (long) usuarioEnSesion.getLastRule();
+        long oneDayInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        return elapsedTime >= oneDayInMillis;
     }
 
 
@@ -190,6 +194,13 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
         searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Escriba para buscar");
 
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
+            }
+        });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -214,6 +225,7 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                findViewById(R.id.bottomNavigationView).setVisibility(View.VISIBLE);
 
                 HomeFragment homeFragment = new HomeFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, homeFragment).commit();

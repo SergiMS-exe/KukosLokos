@@ -13,13 +13,13 @@
 
         <TextView
             android:id="@+id/movieTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="30dp"
             android:singleLine="false"
             android:text="Peli title"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
+            android:layout_marginLeft="20dp"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/white"
             android:text="@string/guardar_peli"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/moviePoster"
@@ -75,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:text="Sinopsis" />
+                android:text="No hay información sobre la sinopsis" />
 
             <Button
                 android:id="@+id/btnVerMas"
@@ -94,9 +95,9 @@
             android:id="@+id/textProviders"
             android:layout_width="382dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
             android:textSize="17sp"
-            android:text="Providers"
+            android:text="Proveedores"
+            android:paddingLeft="16dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/providers"
             app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +109,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginHorizontal="20dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +124,9 @@
                     android:id="@+id/textViewStreaming"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Streaming" />
+                    android:paddingLeft="20dp"
+                    android:text="No hay informacion de los proveedores"
+                    />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerviewStreaming"
@@ -143,7 +145,7 @@
                     android:id="@+id/textViewComprar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Comprar" />
+                    android:paddingLeft="20dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -162,7 +164,7 @@
                     android:id="@+id/textViewAlquilar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Alquilar" />
+                    android:paddingLeft="20dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -78,7 +78,12 @@ public class DetailsContent extends AppCompatActivity {
             pelicula = peliById.get();
 
             titulo.setText(pelicula.getTitulo());
-            sinopsis.setText(pelicula.getArgumento());
+            if(pelicula.getArgumento().equals("")){
+                sinopsis.setText("No hay información sobre el argumento");
+                btnVerMas.setText("");
+            }else{
+                sinopsis.setText(pelicula.getArgumento());
+            }
             sinopsis.setLines(3);
 
             Picasso.get().load(PeliculaView.BASE_URL_POSTER+pelicula.getPathPoster()).into(poster);
@@ -155,20 +160,34 @@ public class DetailsContent extends AppCompatActivity {
         List<JsonObject> rent = new ArrayList<>();
         List<JsonObject> flatrate = new ArrayList<>();
 
+        TextView titleProviders = (TextView) findViewById(R.id.textProviders);
+        TextView textViewStreaming = (TextView) findViewById(R.id.textViewStreaming);
+        TextView textViewComprar = (TextView) findViewById(R.id.textViewComprar);
+        TextView textViewAlquilar = (TextView) findViewById(R.id.textViewAlquilar);
+
         for (JsonObject object : providers){
             String monetizationType = object.get("monetization_type").getAsString();
             if (monetizationType.equals("buy")
                     && buy.stream().filter(x->x.get("package_short_name").getAsString().equals(object.get("package_short_name").getAsString())).count()==0
-                    && ProvidersAdapter.logosProviders.get(object.get("package_short_name").getAsString())!=null)
+                    && ProvidersAdapter.logosProviders.get(object.get("package_short_name").getAsString())!=null){
                 buy.add(object);
+                titleProviders.setText("Providers");
+                textViewComprar.setText("Comprar");
+            }
             else if (monetizationType.equals("rent")
                     && rent.stream().filter(x->x.get("package_short_name").getAsString().equals(object.get("package_short_name").getAsString())).count()==0
-                    && ProvidersAdapter.logosProviders.get(object.get("package_short_name").getAsString())!=null)
+                    && ProvidersAdapter.logosProviders.get(object.get("package_short_name").getAsString())!=null) {
                 rent.add(object);
+                titleProviders.setText("Providers");
+                textViewAlquilar.setText("Alquilar");
+            }
             else if (monetizationType.equals("flatrate")
                     && flatrate.stream().filter(x->x.get("package_short_name").getAsString().equals(object.get("package_short_name").getAsString())).count()==0
-                    && ProvidersAdapter.logosProviders.get(object.get("package_short_name").getAsString())!=null)
+                    && ProvidersAdapter.logosProviders.get(object.get("package_short_name").getAsString())!=null) {
                 flatrate.add(object);
+                titleProviders.setText("Providers");
+                textViewStreaming.setText("Streaming");
+            }
         }
 
         RecyclerView buyRecyler = findViewById(R.id.recyclerviewCompra);

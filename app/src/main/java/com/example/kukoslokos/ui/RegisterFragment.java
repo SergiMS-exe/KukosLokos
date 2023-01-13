@@ -112,7 +112,6 @@ public class RegisterFragment extends Fragment {
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 switch (response.code()){
                     case 200:
-                        Usuario user = response.body(); //Cogemos el usuario
 
                         peticionLogin(nickName, password);
 
