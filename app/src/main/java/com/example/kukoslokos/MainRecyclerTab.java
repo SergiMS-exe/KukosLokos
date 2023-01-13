@@ -4,6 +4,8 @@ package com.example.kukoslokos;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -32,6 +34,7 @@ import com.example.kukoslokos.ui.SavedFragment;
 import com.example.kukoslokos.util.ApiUtil;
 import com.example.kukoslokos.util.bodies.UpdateRuleBody;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.List;
 import java.util.Random;
@@ -74,6 +77,8 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#E31931")));
+
         this.sharedPreferences = getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
 
         if (!sharedPreferences.getString(MainRecyclerTab.USER_ID_KEY, "").equals("")){
@@ -93,11 +98,7 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
                 switch (response.code()){
                     case 200:
                         MainRecyclerTab.usuarioEnSesion=response.body();
-                        //Comprobamos si ya han pasado 24 horas desde la ultima ruleta
-                        long currentTimestamp = System.currentTimeMillis();
-                        long elapsedTime = currentTimestamp - (long) usuarioEnSesion.getLastRule();
-                        long oneDayInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-                        if (elapsedTime >= oneDayInMillis){
+                        if (checkRule()){
                             cargadoRuleta();
                         } else {
                             finRuleta=true;
@@ -115,6 +116,14 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
                 Log.e("Lista - error", t.toString());
             }
         });
+    }
+
+    private boolean checkRule() {
+        //Comprobamos si ya han pasado 24 horas desde la ultima ruleta
+        long currentTimestamp = System.currentTimeMillis();
+        long elapsedTime = currentTimestamp - (long) usuarioEnSesion.getLastRule();
+        long oneDayInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        return elapsedTime >= oneDayInMillis;
     }
 
 
@@ -140,20 +149,19 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
         });
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navBarListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
+    private NavigationBarView.OnItemSelectedListener navBarListener
+            = new NavigationBarView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
             getSupportActionBar().hide();
             switch (item.getItemId()) {
                 case R.id.home:
                     //Creamos el framento de información
                     while(!finRuleta){}
-                        HomeFragment homeFragment = new HomeFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, homeFragment).commit();
-                        getSupportActionBar().show();
+                    HomeFragment homeFragment = new HomeFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, homeFragment).commit();
+                    getSupportActionBar().show();
+
                     return true;
 
                 case R.id.saved:
@@ -181,11 +189,17 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_up, menu);
-        menu.findItem(R.id.backButton).setVisible(false);
 
         MenuItem menuItem = menu.findItem(R.id.search);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Escriba para buscar");
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
+            }
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -211,6 +225,7 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                findViewById(R.id.bottomNavigationView).setVisibility(View.VISIBLE);
 
                 HomeFragment homeFragment = new HomeFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, homeFragment).commit();
@@ -263,8 +278,8 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
         setContentView(R.layout.activity_recycler_tab);
 
         //Gestion de la barra de navegacion
-        BottomNavigationView navView = findViewById(R.id.bottomNavigationView);
-        navView.setOnNavigationItemSelectedListener(navBarListener);
+        NavigationBarView navView = findViewById(R.id.bottomNavigationView);
+        navView.setOnItemSelectedListener(navBarListener);
 
         navView.setSelectedItemId(R.id.home);
     }
