@@ -1,11 +1,17 @@
 package com.example.kukoslokos;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,7 +39,9 @@ import org.json.JSONArray;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
@@ -43,12 +51,13 @@ import retrofit2.Response;
 public class DetailsContent extends AppCompatActivity {
 
     Pelicula pelicula = null;
-    List<JsonObject> providers = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_content);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#E31931")));
 
         //recogemos el id de la pelicula
         Intent intent = getIntent();
@@ -67,9 +76,6 @@ public class DetailsContent extends AppCompatActivity {
             GetPeliById peliById = new GetPeliById(idPeli);
             peliById.execute();
             pelicula = peliById.get();
-
-            //Obtenemos los proveedores de plataformas
-            peticionObtenerProveedores(idPeli, pelicula.getTitulo());
 
             titulo.setText(pelicula.getTitulo());
             sinopsis.setText(pelicula.getArgumento());
@@ -136,16 +142,65 @@ public class DetailsContent extends AppCompatActivity {
         }
     }
 
-    private void peticionObtenerProveedores(int idPeli, String titulo) {
-        Call<JSONArray> call  = ApiUtil.getKukosApi().getProviders(idPeli, titulo);
-        call.enqueue(new Callback<JSONArray>() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        peticionObtenerProveedores(pelicula.getId(), pelicula.getTitulo());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void showProviders(List<JsonObject> providers){
+
+        List<JsonObject> buy = new ArrayList<>();
+        List<JsonObject> rent = new ArrayList<>();
+        List<JsonObject> flatrate = new ArrayList<>();
+
+        for (JsonObject object : providers){
+            String monetizationType = object.get("monetization_type").getAsString();
+            if (monetizationType.equals("buy")
+                    && buy.stream().filter(x->x.get("package_short_name").getAsString().equals(object.get("package_short_name").getAsString())).count()==0
+                    && ProvidersAdapter.logosProviders.get(object.get("package_short_name").getAsString())!=null)
+                buy.add(object);
+            else if (monetizationType.equals("rent")
+                    && rent.stream().filter(x->x.get("package_short_name").getAsString().equals(object.get("package_short_name").getAsString())).count()==0
+                    && ProvidersAdapter.logosProviders.get(object.get("package_short_name").getAsString())!=null)
+                rent.add(object);
+            else if (monetizationType.equals("flatrate")
+                    && flatrate.stream().filter(x->x.get("package_short_name").getAsString().equals(object.get("package_short_name").getAsString())).count()==0
+                    && ProvidersAdapter.logosProviders.get(object.get("package_short_name").getAsString())!=null)
+                flatrate.add(object);
+        }
+
+        RecyclerView buyRecyler = findViewById(R.id.recyclerviewCompra);
+        RecyclerView rentRecyler = findViewById(R.id.recyclerviewAlquiler);
+        RecyclerView streamingRecyler = findViewById(R.id.recyclerviewStreaming);
+
+        ProvidersAdapter.OnItemClickListener listener = new ProvidersAdapter.OnItemClickListener() {
             @Override
-            public void onResponse(Call<JSONArray> call, Response<JSONArray> response) {
+            public void onItemClick(String ruta) {
+                Intent newIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ruta));
+                startActivity(newIntent);
+            }
+        };
+
+        buyRecyler.setAdapter(new ProvidersAdapter(buy, listener));
+        rentRecyler.setAdapter(new ProvidersAdapter(rent, listener));
+        streamingRecyler.setAdapter(new ProvidersAdapter(flatrate, listener));
+    }
+
+    private void peticionObtenerProveedores(int idPeli, String titulo) {
+        Call<JsonObject> call  = ApiUtil.getKukosApi().getProviders(idPeli, titulo);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 switch (response.code()){
                     case 200:
                         Gson gson = new Gson();
                         Type listType = new TypeToken<List<JsonObject>>(){}.getType();
-                        providers = gson.fromJson(response.body().toString(), listType);
+                        List<JsonObject> providers = gson.fromJson(response.body().get("data").toString(), listType);
+                        showProviders(providers);
+                        break;
+                    case 202:
                         break;
                     default:
                         call.cancel();
@@ -154,7 +209,7 @@ public class DetailsContent extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<JSONArray> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e("providers - ", t.toString());
             }
         });

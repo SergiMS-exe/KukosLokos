@@ -19,9 +19,11 @@
         <activity
             android:parentActivityName=".MainRecyclerTab"
             android:name=".DetailsContent"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".MainRecyclerTab"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
