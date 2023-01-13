@@ -4,6 +4,8 @@ package com.example.kukoslokos;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -74,6 +76,8 @@ public class MainRecyclerTab extends AppCompatActivity implements Animation.Anim
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#E31931")));
 
         this.sharedPreferences = getSharedPreferences(MainRecyclerTab.SHARED_PREFS, Context.MODE_PRIVATE);
 

@@ -2,10 +2,13 @@ package com.example.kukoslokos;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -43,12 +46,13 @@ import retrofit2.Response;
 public class DetailsContent extends AppCompatActivity {
 
     Pelicula pelicula = null;
-    List<JsonObject> providers = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_content);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#E31931")));
 
         //recogemos el id de la pelicula
         Intent intent = getIntent();
@@ -136,6 +140,30 @@ public class DetailsContent extends AppCompatActivity {
         }
     }
 
+    private void showProviders(List<JsonObject> providers){
+
+        List<JsonObject> buy = new ArrayList<>();
+        List<JsonObject> rent = new ArrayList<>();
+        List<JsonObject> flatrate = new ArrayList<>();
+
+        for (JsonObject object : providers){
+            String monetizationType = object.get("monetization_type").getAsString();
+            if (monetizationType.equals("buy"))
+                buy.add(object);
+            else if (monetizationType.equals("rent"))
+                rent.add(object);
+            else if (monetizationType.equals("flatrate"))
+                flatrate.add(object);
+        }
+
+        RecyclerView buyRecyler = findViewById(R.id.recyclerviewCompra);
+        RecyclerView rentRecyler = findViewById(R.id.recyclerviewAlquiler);
+        RecyclerView streamingRecyler = findViewById(R.id.recyclerviewStreaming);
+
+
+
+    }
+
     private void peticionObtenerProveedores(int idPeli, String titulo) {
         Call<JSONArray> call  = ApiUtil.getKukosApi().getProviders(idPeli, titulo);
         call.enqueue(new Callback<JSONArray>() {
@@ -145,7 +173,8 @@ public class DetailsContent extends AppCompatActivity {
                     case 200:
                         Gson gson = new Gson();
                         Type listType = new TypeToken<List<JsonObject>>(){}.getType();
-                        providers = gson.fromJson(response.body().toString(), listType);
+                        List<JsonObject> providers = gson.fromJson(response.body().toString(), listType);
+                        showProviders(providers);
                         break;
                     default:
                         call.cancel();

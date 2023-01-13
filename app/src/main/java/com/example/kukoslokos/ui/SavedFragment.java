@@ -26,6 +26,10 @@ import com.example.kukoslokos.model.Pelicula;
 import com.example.kukoslokos.tasks.GetPeliById;
 import com.example.kukoslokos.tasks.GetPeliculasGuardadas;
 import com.example.kukoslokos.util.Service;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +81,13 @@ public class SavedFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.peliculasGuardadas);
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setFlexWrap(FlexWrap.WRAP);
+        layoutManager.setJustifyContent(JustifyContent.CENTER);
+        recyclerView.setLayoutManager(layoutManager);
 
         TextView titleSaved = (TextView) getView().findViewById(R.id.titleSaved);
 
