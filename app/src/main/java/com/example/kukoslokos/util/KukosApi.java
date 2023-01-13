@@ -6,6 +6,7 @@ import com.example.kukoslokos.util.bodies.RegisterBody;
 import com.example.kukoslokos.util.bodies.SaveMovieBody;
 import com.example.kukoslokos.util.bodies.UpdateProfilePhoto;
 import com.example.kukoslokos.util.bodies.UpdateRuleBody;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 
@@ -36,7 +37,7 @@ public interface KukosApi {
     );
 
     @GET("getProviders")
-    Call<JSONArray> getProviders(
+    Call<JsonObject> getProviders(
             @Query("idMovie") int idMovie,
             @Query("title") String title
     );
