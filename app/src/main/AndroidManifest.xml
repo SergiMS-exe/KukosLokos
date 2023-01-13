@@ -17,6 +17,7 @@
         android:theme="@style/Theme.KukosLokos"
         tools:targetApi="31">
         <activity
+            android:parentActivityName=".MainRecyclerTab"
             android:name=".DetailsContent"
             android:exported="false" />
         <activity

@@ -24,8 +24,15 @@ import com.example.kukoslokos.tasks.GetPeliculasGuardadas;
 import com.example.kukoslokos.tasks.GuardarPeli;
 import com.example.kukoslokos.util.ApiUtil;
 import com.example.kukoslokos.util.bodies.SaveMovieBody;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -36,6 +43,7 @@ import retrofit2.Response;
 public class DetailsContent extends AppCompatActivity {
 
     Pelicula pelicula = null;
+    List<JsonObject> providers = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +67,9 @@ public class DetailsContent extends AppCompatActivity {
             GetPeliById peliById = new GetPeliById(idPeli);
             peliById.execute();
             pelicula = peliById.get();
+
+            //Obtenemos los proveedores de plataformas
+            peticionObtenerProveedores(idPeli, pelicula.getTitulo());
 
             titulo.setText(pelicula.getTitulo());
             sinopsis.setText(pelicula.getArgumento());
@@ -125,6 +136,31 @@ public class DetailsContent extends AppCompatActivity {
         }
     }
 
+    private void peticionObtenerProveedores(int idPeli, String titulo) {
+        Call<JSONArray> call  = ApiUtil.getKukosApi().getProviders(idPeli, titulo);
+        call.enqueue(new Callback<JSONArray>() {
+            @Override
+            public void onResponse(Call<JSONArray> call, Response<JSONArray> response) {
+                switch (response.code()){
+                    case 200:
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<JsonObject>>(){}.getType();
+                        providers = gson.fromJson(response.body().toString(), listType);
+                        break;
+                    default:
+                        call.cancel();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONArray> call, Throwable t) {
+                Log.e("providers - ", t.toString());
+            }
+        });
+    }
+
+
     private void peticionGuardarPeli(String idUser, int idMovie) {
         Call<Usuario> call = ApiUtil.getKukosApi().saveMovie(new SaveMovieBody(idUser, idMovie));
         call.enqueue(new Callback<Usuario>() {
@@ -147,22 +183,4 @@ public class DetailsContent extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_up, menu);
-
-        menu.findItem(R.id.search).setVisible(false);
-        menu.findItem(R.id.filter).setVisible(false);
-
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.backButton)
-            onBackPressed();
-        return super.onOptionsItemSelected(item);
-    }
 }

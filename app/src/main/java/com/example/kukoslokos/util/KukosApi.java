@@ -7,6 +7,8 @@ import com.example.kukoslokos.util.bodies.SaveMovieBody;
 import com.example.kukoslokos.util.bodies.UpdateProfilePhoto;
 import com.example.kukoslokos.util.bodies.UpdateRuleBody;
 
+import org.json.JSONArray;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -31,6 +33,12 @@ public interface KukosApi {
     @GET("getUserById")
     Call<Usuario> getUserById(
             @Query("_id") String id
+    );
+
+    @GET("getProviders")
+    Call<JSONArray> getProviders(
+            @Query("idMovie") int idMovie,
+            @Query("title") String title
     );
 
     @PUT("updateLastRule")
